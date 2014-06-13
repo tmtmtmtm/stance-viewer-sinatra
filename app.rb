@@ -32,7 +32,7 @@ get '/party/:id' do |id|
   @members = json_file('people').find_all { |mp| 
     mp['memberships'].detect { |mem| mem['organization_id'] == id } 
   }
-  @stances = json_file('partystances').map { |s|
+  @stances = json_file('partystances').find_all { |s| s['stances'].has_key? id }.map { |s|
     s['stances'][id].merge({
       "id" => s['id'],
       "text" => s['html'],
