@@ -65,7 +65,17 @@ get '/person/:id' do |id|
 end
 
 get '/issue/:id' do |id|
-  id
+  issues = json_file('partystances')
+  @issue = issues.detect { |i| i['id'] == id } or pass
+
+  parties = json_file('parties')
+  @stances = @issue['stances'].reject { |k,v| k[/peaker/] }.map { |k, v|
+    v.merge({
+      "party" => parties.detect { |p| p['id'] == k },
+      "stance_text" => stance_text(v)
+    })
+  }
+  haml :issue
 end
 
 
