@@ -2,23 +2,29 @@ require 'sinatra'
 require 'haml'
 require 'json'
 
+helpers do
+  def json_file(file)
+    JSON.parse(File.read("data/#{file}.json"))
+  end
+end
+
 get '/' do
   haml :index
 end
 
 get '/parties.html' do
-  @parties = JSON.parse(File.read('data/parties.json'))
+  @parties = json_file('parties')
   haml :parties
 end
 
 get '/people.html' do
-  @parties = JSON.parse(File.read('data/parties.json'))
-  @people = JSON.parse(File.read('data/people.json'))
+  @parties = json_file('parties')
+  @people = json_file('people')
   haml :people
 end
 
 get '/issues.html' do
-  @issues = JSON.parse(File.read('data/issues.json'))
+  @issues = json_file('issues')
   haml :issues
 end
 
