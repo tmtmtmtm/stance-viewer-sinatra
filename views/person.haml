@@ -1,0 +1,23 @@
+
+#person
+  %h1= @person['name']
+  %ul 
+    - @person['memberships'].each do |mem|
+      %li<
+        <a href="/party/#{mem['party']['id']}">#{mem['party']['name']}</a>
+        - if mem['start_date'] or mem['end_date']
+          (
+        - if mem['start_date'] 
+          = mem['start_date'].year
+        - if mem['start_date'] or mem['end_date']
+          –
+        - if mem['end_date'] 
+          = mem['end_date'].year
+        - if mem['start_date'] or mem['end_date']
+          )
+
+  %h3 Stances
+
+  %ul 
+    - @stances.sort_by { |s| s['weight'] }.reverse.each do |s| 
+      %li voted <span class="stance">#{s['stance_text']}</span> <a href="/issue/#{s['id']}">#{s['text']}</a>

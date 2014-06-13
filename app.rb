@@ -43,7 +43,25 @@ get '/party/:id' do |id|
 end
 
 get '/person/:id' do |id|
-  id
+  people = json_file('people')
+  @person = people.detect { |p| p['id'] == id } or pass
+
+  parties = json_file('parties')
+  @person['memberships'].each { |mem|
+    mem['party'] = parties.detect { |org| org['id'] == mem['organization_id'] }
+    mem['party']['name'] = 'Independent' if mem['organization_id'] == 'ind' 
+    mem['start_date'] = Date.iso8601(mem['start_date']) if mem['start_date']
+    mem['end_date']   = Date.iso8601(mem['end_date'])   if mem['end_date']
+  }
+
+  @stances = json_file('mpstances').find_all {|s| s['stances'].has_key? id }.map { |s|
+    s['stances'][id].merge({
+      "id" => s['id'],
+      "text" => s['html'],
+      "stance_text" => stance_text(s['stances'][id]),
+    })
+  }
+  haml :person
 end
 
 get '/issue/:id' do |id|
