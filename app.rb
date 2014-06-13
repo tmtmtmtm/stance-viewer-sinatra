@@ -23,7 +23,7 @@ get '/issues.html' do
 end
 
 get '/about.html' do
-  "About"
+  haml :about
 end
 
 get '/party/:id' do |id|
