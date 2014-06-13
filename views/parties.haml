@@ -1,0 +1,7 @@
+
+#parties
+  %h1 Political Parties
+
+  %ul
+    - @parties.each do |party|
+      %li <a href="/party/#{party['id']}">#{party['name']}</a>

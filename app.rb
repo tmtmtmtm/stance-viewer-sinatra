@@ -1,12 +1,14 @@
 require 'sinatra'
 require 'haml'
+require 'json'
 
 get '/' do
   haml :index
 end
 
 get '/parties.html' do
-  "Political parties"
+  @parties = JSON.parse(File.read('data/parties.json'))
+  haml :parties
 end
 
 get '/people.html' do
