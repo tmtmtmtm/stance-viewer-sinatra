@@ -5,6 +5,7 @@ GEM
     eventmachine (1.0.3)
     haml (4.0.5)
       tilt
+    json (1.8.1)
     rack (1.5.2)
     redcarpet (2.3.0)
     sinatra (1.1.0)
@@ -21,6 +22,7 @@ PLATFORMS
 
 DEPENDENCIES
   haml
+  json
   redcarpet
   sinatra (= 1.1.0)
   thin
