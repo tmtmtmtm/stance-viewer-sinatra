@@ -1,0 +1,58 @@
+:plain
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset='utf-8'>
+      <meta http-equiv="X-UA-Compatible" content="chrome=1">
+      <link href='http://fonts.googleapis.com/css?family=Quicksand:300,400,700' rel='stylesheet' type='text/css'>
+      <link rel="stylesheet" type="text/css" href="/stylesheets/app.css" media="screen" />
+      <link rel="stylesheet" type="text/css" href="/stylesheets/common.css" media="screen" />
+      <link rel="stylesheet" type="text/css" href="/stylesheets/print.css" media="print" />
+      <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+      <![endif]-->
+      <title>Stancer UK</title>
+    </head>
+    <body>
+      <div class="navbar navbar-inverse navbar-fixed-top ng-scope">
+        <div class="page-header ng-scope">
+          <div class="logo pull-left">
+            <a class="navbar-brand" href="/">Stancer UK</a>
+          </div>
+          <div class="left pull-left">
+            <ul class="navbar-nav nav">
+              <li><a href="/parties.html">Parties</a></li>
+              <li><a href="/people.html">People</a></li>
+              <li><a href="/issues.html">Issues</a></li>
+            </ul>
+          </div>
+          <div class="pull-right">
+            <ul class="navbar-nav nav">
+              <li><a href="/about.html">About</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <section class="content">
+        <section class="container">
+          <section data-ui-view="" class="ng-scope">
+            <section data-ng-controller="PartiesController" data-ng-init="findOne()" class="ng-scope">
+
+=yield
+
+:plain
+            </section>
+          </section>
+        </section>
+      </section>
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-56653-20', 'discomposer.com');
+        ga('send', 'pageview');
+      </script>
+    </body>
+  </html>
+
