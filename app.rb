@@ -12,7 +12,9 @@ get '/parties.html' do
 end
 
 get '/people.html' do
-  "Members of Parliament"
+  @parties = JSON.parse(File.read('data/parties.json'))
+  @people = JSON.parse(File.read('data/people.json'))
+  haml :people
 end
 
 get '/issues.html' do

@@ -1,0 +1,10 @@
+
+#people
+  %h1 Members of Parliament
+
+  - @parties.each do |p|
+    %h3= p['name']
+    %ul#four-col
+      - @people.find_all { |mp| mp['memberships'].detect { |mem| mem['organization_id'] == p['id'] } }.each do |wmp|
+        %li <a href="/person/#{wmp['id']}">#{wmp['name']}</a>
+
