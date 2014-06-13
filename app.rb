@@ -16,7 +16,8 @@ get '/people.html' do
 end
 
 get '/issues.html' do
-  "Issues"
+  @issues = JSON.parse(File.read('data/issues.json'))
+  haml :issues
 end
 
 get '/about.html' do

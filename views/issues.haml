@@ -1,0 +1,7 @@
+
+#issues
+  %h1 Issues
+
+  %ul
+    - @issues.sort_by { |i| i['aspects'].count }.reverse.each do |i|
+      %li On <a href="/issue/#{i['id']}">#{i['html']}</a>...
