@@ -26,3 +26,9 @@
     - @stances.sort_by { |s| s['weight'] }.reverse.each do |s| 
       %li voted <span class="stance">#{s['stance_text']}</span> <a href="/issue/#{s['id']}">#{s['text']}</a>
 
+  %h3 Party Agreements
+
+  %ul
+    - @party_distances.sort_by { |k,v| v }.each do |p, d|
+      %li <a href="/party/#{p['id']}">#{p['name']}</a> #{100-(d * 100).to_i}%
+
