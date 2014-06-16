@@ -48,7 +48,9 @@ get '/person/:id' do |id|
 
   parties = json_file('parties')
   @person['memberships'].each { |mem|
-    mem['party'] = parties.detect { |org| org['id'] == mem['organization_id'] }
+    mem['party'] = parties.detect { |org| org['id'] == mem['organization_id'] } || {}
+    # If not a real party (e.g. Speaker)
+    mem['party']['name'] ||= mem['organization_id'].capitalize
     mem['party']['name'] = 'Independent' if mem['organization_id'] == 'ind' 
     mem['start_date'] = Date.iso8601(mem['start_date']) if mem['start_date']
     mem['end_date']   = Date.iso8601(mem['end_date'])   if mem['end_date']
