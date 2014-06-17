@@ -40,6 +40,15 @@ get '/person/:id' do |id|
   haml :person
 end
 
+get '/compare/*/*' do |id1,id2|
+  @p1 = party_from_id(id1) or pass
+  @p2 = party_from_id(id2) or pass
+  s1 = party_stances(@p1) 
+  s2 = party_stances(@p2) 
+  @merged = (s1 + s2).group_by { |s| s['id'] }.reject { |k,v| v.count != 2 }
+  haml :compare
+end
+
 get '/issue/:id' do |id|
   @issue = issue_from_id(id) or pass
   @stances = issue_stances(@issue)
@@ -67,6 +76,7 @@ helpers do
     json_file('partystances').find_all { |s| s['stances'].has_key? party['id'] }.map { |s|
       s['stances'][party['id']].merge({
         "id" => s['id'],
+        "party" => party,
         "text" => s['html'],
         "stance_text" => stance_text(s['stances'][party['id']]),
       })

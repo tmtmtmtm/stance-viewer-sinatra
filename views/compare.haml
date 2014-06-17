@@ -1,0 +1,15 @@
+
+#compare
+
+  %h3 #{@p1['name']} vs #{@p2['name']}
+
+  %ul 
+    - @merged.sort_by { |k,v| (v.first['weight'] - v.last['weight']).abs }.reverse.each do |k,v|
+      %li 
+        On <a href="/issue/#{k}">#{v.first['text']}</a>,
+        - if v.first['stance_text'] == v.last['stance_text']
+          both voted <span class="stance">#{v.first['stance_text']}</span>
+        - else
+          #{v.first['party']['name'].gsub(/Party/,'')} voted <span class="stance">#{v.first['stance_text']}</span> and
+          #{v.last['party']['name'].gsub(/Party/,'')} voted <span class="stance">#{v.last['stance_text']}</span> 
+
