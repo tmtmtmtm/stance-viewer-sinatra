@@ -27,64 +27,86 @@ get '/about.html' do
 end
 
 get '/party/:id' do |id|
-  parties = json_file('parties')
-  @party = parties.detect { |p| p['id'] == id } or pass
-  @members = json_file('people').find_all { |mp| 
-    mp['memberships'].detect { |mem| mem['organization_id'] == id } 
-  }
-  @stances = json_file('partystances').find_all { |s| s['stances'].has_key? id }.map { |s|
-    s['stances'][id].merge({
-      "id" => s['id'],
-      "text" => s['html'],
-      "stance_text" => stance_text(s['stances'][id]),
-    })
-  }
+  @party = party_from_id(id) or pass
+  @members = party_members(@party)
+  @stances = party_stances(@party) 
   haml :party
 end
 
 get '/person/:id' do |id|
-  people = json_file('people')
-  @person = people.detect { |p| p['id'] == id } or pass
-
-  parties = json_file('parties')
-  @person['memberships'].each { |mem|
-    mem['party'] = parties.detect { |org| org['id'] == mem['organization_id'] } || {}
-    # If not a real party (e.g. Speaker)
-    mem['party']['name'] ||= mem['organization_id'].capitalize
-    mem['party']['name'] = 'Independent' if mem['organization_id'] == 'ind' 
-    mem['start_date'] = Date.iso8601(mem['start_date']) if mem['start_date']
-    mem['end_date']   = Date.iso8601(mem['end_date'])   if mem['end_date']
-  }
-
-  @stances = json_file('mpstances').find_all {|s| s['stances'].has_key? id }.map { |s|
-    s['stances'][id].merge({
-      "id" => s['id'],
-      "text" => s['html'],
-      "stance_text" => stance_text(s['stances'][id]),
-    })
-  }
-
+  @person = person_from_id(id) or pass
+  expand_memberships!(@person)
+  @stances = person_stances(@person)
   haml :person
 end
 
 get '/issue/:id' do |id|
-  issues = json_file('partystances')
-  @issue = issues.detect { |i| i['id'] == id } or pass
-
-  parties = json_file('parties')
-  @stances = @issue['stances'].reject { |k,v| k[/peaker/] }.map { |k, v|
-    v.merge({
-      "party" => parties.detect { |p| p['id'] == k },
-      "stance_text" => stance_text(v)
-    })
-  }
+  @issue = issue_from_id(id) or pass
+  @stances = issue_stances(@issue)
   haml :issue
 end
-
 
 helpers do
   def json_file(file)
     JSON.parse(File.read("data/#{file}.json"))
+  end
+
+  def party_from_id(id)
+    json_file('parties').detect { |p| p['id'] == id } 
+  end
+
+  def person_from_id(id)
+    json_file('people').detect { |p| p['id'] == id } 
+  end
+
+  def issue_from_id(id)
+    json_file('partystances').detect { |i| i['id'] == id } 
+  end
+
+  def party_stances(party)
+    json_file('partystances').find_all { |s| s['stances'].has_key? party['id'] }.map { |s|
+      s['stances'][party['id']].merge({
+        "id" => s['id'],
+        "text" => s['html'],
+        "stance_text" => stance_text(s['stances'][party['id']]),
+      })
+    }
+  end
+
+  def person_stances(person)
+    json_file('mpstances').find_all {|s| s['stances'].has_key? person['id'] }.map { |s|
+      s['stances'][person['id']].merge({
+        "id" => s['id'],
+        "text" => s['html'],
+        "stance_text" => stance_text(s['stances'][person['id']]),
+      })
+    }
+  end
+
+  def issue_stances(issue)
+    @issue['stances'].reject { |k,v| k[/peaker/] }.map { |k, v|
+      v.merge({
+        "party" => party_from_id(k),
+        "stance_text" => stance_text(v)
+      })
+    }
+  end
+
+  def party_members(party)
+    json_file('people').find_all { |mp| 
+      mp['memberships'].detect { |mem| mem['organization_id'] == party['id'] } 
+    }
+  end
+
+  def expand_memberships!(person)
+    person['memberships'].each { |mem|
+      mem['party'] = party_from_id(mem['organization_id']) || {}
+      # If not a real party (e.g. Speaker)
+      mem['party']['name'] ||= mem['organization_id'].capitalize
+      mem['party']['name'] = 'Independent' if mem['organization_id'] == 'ind' 
+      mem['start_date'] = Date.iso8601(mem['start_date']) if mem['start_date']
+      mem['end_date']   = Date.iso8601(mem['end_date'])   if mem['end_date']
+    }
   end
 
   def stance_text(stance)
