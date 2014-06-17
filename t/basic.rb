@@ -11,10 +11,113 @@ end
 
 describe "Stance viewer" do
 
-  it "should have a homepage" do
-    get '/'
-    last_response.body.must_include 'What is this'
+  describe "when viewing the home page" do
+
+    before { get '/' }
+
+    it "should have show some text" do
+      last_response.body.must_include 'What is this'
+    end
+
   end
+
+  #-------------------------------------------------------------------
+
+  describe "when viewing the party list page" do
+
+    before { get '/parties.html' }
+
+    it "should have the Independents" do
+      last_response.body.must_include 'Independent MPs'
+    end
+
+  end
+
+  #-------------------------------------------------------------------
+
+  describe "when viewing the MP list page" do
+
+    before { get '/people.html' }
+
+    it "should have John Bercow" do
+      last_response.body.must_include 'John Bercow'
+    end
+  end
+
+  #-------------------------------------------------------------------
+
+  describe "when viewing the issues page" do
+
+    before { get '/issues.html' }
+
+    it "should have a known issue" do
+      last_response.body.must_include 'alcoholic drinks'
+    end
+
+  end
+
+  #-------------------------------------------------------------------
+
+  describe "when viewing a Party page" do
+
+    before { get '/party/pc' }
+
+    it "should have have the partys name" do
+      last_response.body.must_include 'Plaid Cymru'
+    end
+
+    it "should have some stances" do
+      last_response.body.must_include 'moderately for'
+    end
+
+    it "should include their MPs" do
+      last_response.body.must_include 'Ieuan Wyn Jones'
+    end
+
+  end
+
+  #-------------------------------------------------------------------
+
+  describe "when viewing an MP page" do
+
+    before { get '/person/john_bercow' }
+
+    it "should have have their name" do
+      last_response.body.must_include 'John Bercow'
+    end
+
+    it "should have their party history" do
+      last_response.body.must_match /Conservative Party<[^\d]+2009/m
+    end
+
+    it "should include Speaker position" do
+      last_response.body.must_match /Speaker\s+\(\s+2009/m
+    end
+
+    it "should have issues" do
+      last_response.body.must_match /strongly against.*hunting ban/
+    end
+
+  end
+
+  #-------------------------------------------------------------------
+
+  describe "when viewing an Issue page" do
+
+    before { get '/issue/PW-811' }
+
+    it "should have have its title" do
+      last_response.body.must_include 'smoking bans'
+    end
+
+    it "should have party stances" do
+      last_response.body.must_match /Green Party.*very strongly for/
+    end
+
+  end
+
+  #-------------------------------------------------------------------
+
 
 end
 
