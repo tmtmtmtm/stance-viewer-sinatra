@@ -67,47 +67,6 @@ get '/person/:id' do |id|
   haml :person
 end
 
-# Temporary location
-get '/distances/:id' do |id|
-  people = json_file('people')
-  @person = people.detect { |p| p['id'] == id } or pass
-
-  parties = json_file('parties')
-  @person['memberships'].each { |mem|
-    mem['party'] = parties.detect { |org| org['id'] == mem['organization_id'] } || {}
-    # If not a real party (e.g. Speaker)
-    mem['party']['name'] ||= mem['organization_id'].capitalize
-    mem['party']['name'] = 'Independent' if mem['organization_id'] == 'ind' 
-    mem['start_date'] = Date.iso8601(mem['start_date']) if mem['start_date']
-    mem['end_date']   = Date.iso8601(mem['end_date'])   if mem['end_date']
-  }
-
-  @stances = json_file('mpstances').find_all {|s| s['stances'].has_key? id }.map { |s|
-    s['stances'][id].merge({
-      "id" => s['id'],
-      "text" => s['html'],
-      "stance_text" => stance_text(s['stances'][id]),
-    })
-  }
-
-  # Average distance of person's vote to a party's vote
-  # TODO move this out somewhere
-  @party_stances = json_file('partystances')
-  pdistances = {}
-  @stances.each do |s|
-    @party_stance = @party_stances.detect { |ps| ps['id'] == s['id'] } or next
-    @party_stance['stances'].reject {|k,v| k[/peaker/] }.each do |party, data|
-      (pdistances[party] ||= []) << (s['weight'] - data['weight']).abs
-    end
-  end
-  @party_distances = Hash[ 
-    pdistances.map { |p, ds|
-      [parties.detect {|org| org['id'] == p }, ds.reduce(:+).to_f / ds.size]
-    }
-  ]
-  haml :person_distance
-end
-
 get '/issue/:id' do |id|
   issues = json_file('partystances')
   @issue = issues.detect { |i| i['id'] == id } or pass
