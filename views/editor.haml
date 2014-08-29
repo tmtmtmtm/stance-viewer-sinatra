@@ -1,0 +1,262 @@
+:plain
+<div class="row">
+    <form class="form-horizontal  ng-dirty ng-valid ng-valid-required" role="form" data-ng-submit="create()">
+        <div class="col-md-8">
+            <h2><span class="label label-default rounded">1</span> Create an issue </h2>
+
+            <div class="">
+                <label mean-token="'create-title'" class="control-label">Title</label>
+                <div class="">
+                    <input type="text" class="form-control ng-dirty ng-valid ng-valid-required" data-ng-model="title" id="title" placeholder="Title" required="">
+                </div>
+            </div>
+            <!--add phrase-->
+            <div class="">
+                <label mean-token="'edit-content'" for="content" class="control-label">Phrase</label>
+                <div class="">
+                    <input type="text" class="form-control ng-dirty ng-valid ng-valid-required" data-ng-model="phrase" id="phrase" placeholder="Phrase" required="">
+                </div>
+            </div>
+ 
+
+            <h2><span class="label label-default rounded">2</span> Add motions to your issue </h2>
+    
+            <div ng-hide="!selectedMotions || selectedMotions.length" class="alert alert-info ng-hide">
+              You don't have any motions!  Find some using the search bar on the right.
+            </div>
+
+            <!--MOTIONS-->
+
+            <label>For this Issue</label>
+            <ul ng-model="selectedMotions" class="selectedMotions ng-pristine ng-valid">
+              <!-- ngRepeat: motion in selectedMotions | filter:{type:'for'} -->
+              <li class="list-group-item ng-scope ng-binding" ng-repeat="motion in selectedMotions | filter:{type:'for'}">
+                <span ng-click="unselectMotion(motion)" class="glyphicon glyphicon-minus-sign actionable"></span> 
+                Hallituksen esitys eduskunnalle laeiksi poliisin hallinnosta annetun lain 15 §:n muuttamisesta, hätäkeskustoiminnasta annetun lain 30 §:n muuttamisesta ja valtion virkamieslain 35 §:n 2 momentin kumoamisesta 
+                <div class="btn-group pull-right">
+                  <label class="btn btn-default btn-xs ng-pristine ng-valid" ng-model="motion.weight" btn-radio="2" ng-click="test(motion)">Strongly for</label>
+                  <label class="btn btn-default btn-xs ng-pristine ng-valid" ng-model="motion.weight" btn-radio="1" ng-click="test(motion)">Moderately for</label>
+                </div>
+
+              </li><!-- end ngRepeat: motion in selectedMotions | filter:{type:'for'} -->
+            </ul>
+
+            <br>
+
+            <label>Against this Issue</label>
+
+                <ul ng-model="selectedMotions" class="selectedMotions ng-pristine ng-valid">
+                    <!-- ngRepeat: motion in selectedMotions | filter:{type:'against'} -->
+                </ul>
+               <button class="btn btn-default" type="submit">Submit</button>
+            </div>
+
+
+       
+        </form>
+    </div>
+    <aside class="col-md-4 inverse motionSearch">  
+                
+
+            <!--SEARCH MOTIONS-->
+            <h2>Available motions</h2>
+            Find motions related to your issue <br>
+            <br>
+            <form class="navbar-form ng-valid ng-dirty" role="search">
+
+                    <div class="input-group">
+                      <input type="text" class="form-control ng-valid ng-dirty" placeholder="Search for Motions" ng-model="searchTerm">
+                      <span class="input-group-btn">
+                        <button ng-click="getMotions()" class="btn btn-default" type="submit"><span class="glyphicon  glyphicon-search"></span> Search
+                        </button>
+                      </span>
+                    </div>
+
+                
+                    <br>
+                    <!--Motion List-->
+                    <div class="listCont">
+                        <ul id="motionList" class="list-unstyled">
+                            <!-- ngRepeat: motion in motions --><li class="list-group-item ng-scope ng-binding selected" ng-repeat="motion in motions" ng-class="{selected: motion.type != undefined}">
+
+
+                            Hallituksen esitys eduskunnalle laeiksi poliisin hallinnosta annetun lain 15 §:n muuttamisesta, hätäkeskustoiminnasta annetun lain 30 §:n muuttamisesta ja valtion virkamieslain 35 §:n 2 momentin kumoamisesta<br>
+
+                            <button type="button" ng-click="addMotion('for',motion)" class="btn btn-primary">For</button>
+                            <button type="button" ng-click="addMotion('against',motion)" class="btn btn-danger">Against</button>
+                            </li><!-- end ngRepeat: motion in motions --><li class="list-group-item ng-scope ng-binding" ng-repeat="motion in motions" ng-class="{selected: motion.type != undefined}">
+
+
+                            Hallituksen esitys eduskunnalle laeiksi työttömyysturvalain muuttamisesta ja väliaikaisesta muuttamisesta, toimeentulotuesta annetun lain 11 §:n muuttamisesta sekä asumistukilain 15 §:n väliaikaisesta muuttamisesta<br>
+
+                            <button type="button" ng-click="addMotion('for',motion)" class="btn btn-primary">For</button>
+                            <button type="button" ng-click="addMotion('against',motion)" class="btn btn-danger">Against</button>
+                            </li><!-- end ngRepeat: motion in motions --><li class="list-group-item ng-scope ng-binding" ng-repeat="motion in motions" ng-class="{selected: motion.type != undefined}">
+
+
+                            Hallituksen esitys eduskunnalle laeiksi elinkeinotulon verottamisesta annetun lain ja verotusmenettelystä annetun lain 65 §:n muuttamisesta<br>
+
+                            <button type="button" ng-click="addMotion('for',motion)" class="btn btn-primary">For</button>
+                            <button type="button" ng-click="addMotion('against',motion)" class="btn btn-danger">Against</button>
+                            </li><!-- end ngRepeat: motion in motions --><li class="list-group-item ng-scope ng-binding" ng-repeat="motion in motions" ng-class="{selected: motion.type != undefined}">
+
+
+                            Hallituksen esitys eduskunnalle laeiksi elinkeinotulon verottamisesta annetun lain ja verotusmenettelystä annetun lain 65 §:n muuttamisesta<br>
+
+                            <button type="button" ng-click="addMotion('for',motion)" class="btn btn-primary">For</button>
+                            <button type="button" ng-click="addMotion('against',motion)" class="btn btn-danger">Against</button>
+                            </li><!-- end ngRepeat: motion in motions --><li class="list-group-item ng-scope ng-binding" ng-repeat="motion in motions" ng-class="{selected: motion.type != undefined}">
+
+
+                            Hallituksen esitys eduskunnalle laeiksi elinkeinotulon verottamisesta annetun lain ja verotusmenettelystä annetun lain 65 §:n muuttamisesta<br>
+
+                            <button type="button" ng-click="addMotion('for',motion)" class="btn btn-primary">For</button>
+                            <button type="button" ng-click="addMotion('against',motion)" class="btn btn-danger">Against</button>
+                            </li><!-- end ngRepeat: motion in motions --><li class="list-group-item ng-scope ng-binding" ng-repeat="motion in motions" ng-class="{selected: motion.type != undefined}">
+
+
+                            Hallituksen esitys eduskunnalle laiksi kunnan peruspalvelujen valtionosuudesta annetun lain muuttamisesta<br>
+
+                            <button type="button" ng-click="addMotion('for',motion)" class="btn btn-primary">For</button>
+                            <button type="button" ng-click="addMotion('against',motion)" class="btn btn-danger">Against</button>
+                            </li><!-- end ngRepeat: motion in motions --><li class="list-group-item ng-scope ng-binding" ng-repeat="motion in motions" ng-class="{selected: motion.type != undefined}">
+
+
+                            Hallituksen esitys eduskunnalle laiksi kunnan peruspalvelujen valtionosuudesta annetun lain muuttamisesta<br>
+
+                            <button type="button" ng-click="addMotion('for',motion)" class="btn btn-primary">For</button>
+                            <button type="button" ng-click="addMotion('against',motion)" class="btn btn-danger">Against</button>
+                            </li><!-- end ngRepeat: motion in motions --><li class="list-group-item ng-scope ng-binding" ng-repeat="motion in motions" ng-class="{selected: motion.type != undefined}">
+
+
+                            Hallituksen esitys eduskunnalle laiksi kaupallisen kalastuksen vakuutustuesta<br>
+
+                            <button type="button" ng-click="addMotion('for',motion)" class="btn btn-primary">For</button>
+                            <button type="button" ng-click="addMotion('against',motion)" class="btn btn-danger">Against</button>
+                            </li><!-- end ngRepeat: motion in motions --><li class="list-group-item ng-scope ng-binding" ng-repeat="motion in motions" ng-class="{selected: motion.type != undefined}">
+
+
+                            Hallituksen esitys eduskunnalle laiksi ikääntyneen väestön toimintakyvyn tukemista sekä iäkkäiden sosiaali- ja terveyspalveluista ja laiksi terveydenhuoltolain 20 §:n kumoamisesta<br>
+
+                            <button type="button" ng-click="addMotion('for',motion)" class="btn btn-primary">For</button>
+                            <button type="button" ng-click="addMotion('against',motion)" class="btn btn-danger">Against</button>
+                            </li><!-- end ngRepeat: motion in motions --><li class="list-group-item ng-scope ng-binding" ng-repeat="motion in motions" ng-class="{selected: motion.type != undefined}">
+
+
+                            Hallituksen esitys eduskunnalle laiksi ikääntyneen väestön toimintakyvyn tukemista sekä iäkkäiden sosiaali- ja terveyspalveluista ja laiksi terveydenhuoltolain 20 §:n kumoamisesta<br>
+
+                            <button type="button" ng-click="addMotion('for',motion)" class="btn btn-primary">For</button>
+                            <button type="button" ng-click="addMotion('against',motion)" class="btn btn-danger">Against</button>
+                            </li><!-- end ngRepeat: motion in motions --><li class="list-group-item ng-scope ng-binding" ng-repeat="motion in motions" ng-class="{selected: motion.type != undefined}">
+
+
+                            Hallituksen esitys eduskunnalle laiksi ikääntyneen väestön toimintakyvyn tukemista sekä iäkkäiden sosiaali- ja terveyspalveluista ja laiksi terveydenhuoltolain 20 §:n kumoamisesta<br>
+
+                            <button type="button" ng-click="addMotion('for',motion)" class="btn btn-primary">For</button>
+                            <button type="button" ng-click="addMotion('against',motion)" class="btn btn-danger">Against</button>
+                            </li><!-- end ngRepeat: motion in motions --><li class="list-group-item ng-scope ng-binding" ng-repeat="motion in motions" ng-class="{selected: motion.type != undefined}">
+
+
+                            Hallituksen esitys eduskunnalle laiksi ikääntyneen väestön toimintakyvyn tukemista sekä iäkkäiden sosiaali- ja terveyspalveluista ja laiksi terveydenhuoltolain 20 §:n kumoamisesta<br>
+
+                            <button type="button" ng-click="addMotion('for',motion)" class="btn btn-primary">For</button>
+                            <button type="button" ng-click="addMotion('against',motion)" class="btn btn-danger">Against</button>
+                            </li><!-- end ngRepeat: motion in motions --><li class="list-group-item ng-scope ng-binding" ng-repeat="motion in motions" ng-class="{selected: motion.type != undefined}">
+
+
+                            Hallituksen esitys eduskunnalle laiksi ikääntyneen väestön toimintakyvyn tukemista sekä iäkkäiden sosiaali- ja terveyspalveluista ja laiksi terveydenhuoltolain 20 §:n kumoamisesta<br>
+
+                            <button type="button" ng-click="addMotion('for',motion)" class="btn btn-primary">For</button>
+                            <button type="button" ng-click="addMotion('against',motion)" class="btn btn-danger">Against</button>
+                            </li><!-- end ngRepeat: motion in motions --><li class="list-group-item ng-scope ng-binding" ng-repeat="motion in motions" ng-class="{selected: motion.type != undefined}">
+
+
+                            Hallituksen esitys eduskunnalle laiksi ikääntyneen väestön toimintakyvyn tukemista sekä iäkkäiden sosiaali- ja terveyspalveluista ja laiksi terveydenhuoltolain 20 §:n kumoamisesta<br>
+
+                            <button type="button" ng-click="addMotion('for',motion)" class="btn btn-primary">For</button>
+                            <button type="button" ng-click="addMotion('against',motion)" class="btn btn-danger">Against</button>
+                            </li><!-- end ngRepeat: motion in motions --><li class="list-group-item ng-scope ng-binding" ng-repeat="motion in motions" ng-class="{selected: motion.type != undefined}">
+
+
+                            Hallituksen esitys eduskunnalle laiksi tutkimus- ja kehittämistoiminnan lisävähennyksestä vuosina 2013-2015<br>
+
+                            <button type="button" ng-click="addMotion('for',motion)" class="btn btn-primary">For</button>
+                            <button type="button" ng-click="addMotion('against',motion)" class="btn btn-danger">Against</button>
+                            </li><!-- end ngRepeat: motion in motions --><li class="list-group-item ng-scope ng-binding" ng-repeat="motion in motions" ng-class="{selected: motion.type != undefined}">
+
+
+                            Hallituksen esitys eduskunnalle laiksi tutkimus- ja kehittämistoiminnan lisävähennyksestä vuosina 2013-2015<br>
+
+                            <button type="button" ng-click="addMotion('for',motion)" class="btn btn-primary">For</button>
+                            <button type="button" ng-click="addMotion('against',motion)" class="btn btn-danger">Against</button>
+                            </li><!-- end ngRepeat: motion in motions --><li class="list-group-item ng-scope ng-binding" ng-repeat="motion in motions" ng-class="{selected: motion.type != undefined}">
+
+
+                            Hallituksen esitys eduskunnalle laiksi tutkimus- ja kehittämistoiminnan lisävähennyksestä vuosina 2013-2015<br>
+
+                            <button type="button" ng-click="addMotion('for',motion)" class="btn btn-primary">For</button>
+                            <button type="button" ng-click="addMotion('against',motion)" class="btn btn-danger">Against</button>
+                            </li><!-- end ngRepeat: motion in motions --><li class="list-group-item ng-scope ng-binding" ng-repeat="motion in motions" ng-class="{selected: motion.type != undefined}">
+
+
+                            Hallituksen esitys eduskunnalle laiksi sijoitustoiminnan veronhuojennuksesta verovuosina 2013-2015 ja laiksi verotusmenettelystä annetun lain 16 §:n muuttamisesta<br>
+
+                            <button type="button" ng-click="addMotion('for',motion)" class="btn btn-primary">For</button>
+                            <button type="button" ng-click="addMotion('against',motion)" class="btn btn-danger">Against</button>
+                            </li><!-- end ngRepeat: motion in motions --><li class="list-group-item ng-scope ng-binding" ng-repeat="motion in motions" ng-class="{selected: motion.type != undefined}">
+
+
+                            Hallituksen esitys eduskunnalle eläkelaitosten vakavaraisuutta koskevien säännösten muuttamiseksi<br>
+
+                            <button type="button" ng-click="addMotion('for',motion)" class="btn btn-primary">For</button>
+                            <button type="button" ng-click="addMotion('against',motion)" class="btn btn-danger">Against</button>
+                            </li><!-- end ngRepeat: motion in motions --><li class="list-group-item ng-scope ng-binding" ng-repeat="motion in motions" ng-class="{selected: motion.type != undefined}">
+
+
+                            Hallituksen esitys eduskunnalle laiksi rikoslain 23 luvun 5 §:n muuttamisesta<br>
+
+                            <button type="button" ng-click="addMotion('for',motion)" class="btn btn-primary">For</button>
+                            <button type="button" ng-click="addMotion('against',motion)" class="btn btn-danger">Against</button>
+                            </li><!-- end ngRepeat: motion in motions --><li class="list-group-item ng-scope ng-binding" ng-repeat="motion in motions" ng-class="{selected: motion.type != undefined}">
+
+
+                            Hallituksen esitys eduskunnalle laiksi maatalouden rakennetuista annetun lain 17 §:n muuttamisesta<br>
+
+                            <button type="button" ng-click="addMotion('for',motion)" class="btn btn-primary">For</button>
+                            <button type="button" ng-click="addMotion('against',motion)" class="btn btn-danger">Against</button>
+                            </li><!-- end ngRepeat: motion in motions --><li class="list-group-item ng-scope ng-binding" ng-repeat="motion in motions" ng-class="{selected: motion.type != undefined}">
+
+
+                            Hallituksen esitys eduskunnalle laiksi maatalouden harjoittamisesta luopumisen tukemisesta annetun lain muuttamisesta<br>
+
+                            <button type="button" ng-click="addMotion('for',motion)" class="btn btn-primary">For</button>
+                            <button type="button" ng-click="addMotion('against',motion)" class="btn btn-danger">Against</button>
+                            </li><!-- end ngRepeat: motion in motions --><li class="list-group-item ng-scope ng-binding" ng-repeat="motion in motions" ng-class="{selected: motion.type != undefined}">
+
+
+                            Hallituksen esitys eduskunnalle laeiksi sairausvakuutuslain muuttamisesta, lasten kotihoidon ja yksityisen hoidon tuesta annetun lain 4 ja 6 §:n muuttamisesta sekä lasten päivähoidosta annetun lain 11 a §:n muuttamisesta<br>
+
+                            <button type="button" ng-click="addMotion('for',motion)" class="btn btn-primary">For</button>
+                            <button type="button" ng-click="addMotion('against',motion)" class="btn btn-danger">Against</button>
+                            </li><!-- end ngRepeat: motion in motions --><li class="list-group-item ng-scope ng-binding" ng-repeat="motion in motions" ng-class="{selected: motion.type != undefined}">
+
+
+                            Hallituksen esitys eduskunnalle laeiksi poliisin hallinnosta annetun lain 15 §:n muuttamisesta, hätäkeskustoiminnasta annetun lain 30 §:n muuttamisesta ja valtion virkamieslain 35 §:n 2 momentin kumoamisesta<br>
+
+                            <button type="button" ng-click="addMotion('for',motion)" class="btn btn-primary">For</button>
+                            <button type="button" ng-click="addMotion('against',motion)" class="btn btn-danger">Against</button>
+                            </li><!-- end ngRepeat: motion in motions --><li class="list-group-item ng-scope ng-binding" ng-repeat="motion in motions" ng-class="{selected: motion.type != undefined}">
+
+
+                            Hallituksen esitys eduskunnalle laeiksi sairausvakuutuslain muuttamisesta, lasten kotihoidon ja yksityisen hoidon tuesta annetun lain 4 ja 6 §:n muuttamisesta sekä lasten päivähoidosta annetun lain 11 a §:n muuttamisesta<br>
+
+                            <button type="button" ng-click="addMotion('for',motion)" class="btn btn-primary">For</button>
+                            <button type="button" ng-click="addMotion('against',motion)" class="btn btn-danger">Against</button>
+                            </li><!-- end ngRepeat: motion in motions -->
+
+                        </ul>
+                    </div>
+
+
+                 </form>
+            </aside>

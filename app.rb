@@ -6,6 +6,10 @@ get '/' do
   haml :index
 end
 
+get '/editor.html' do
+  haml :editor
+end
+
 get '/parties.html' do
   @parties = json_file('parties')
   haml :parties
