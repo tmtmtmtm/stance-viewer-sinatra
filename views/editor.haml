@@ -1,19 +1,19 @@
 :plain
   <div class="row">
-    <form class="form-horizontal  ng-dirty" role="form" data-ng-submit="create()">
+    <form class="form-horizontal" role="form" data-ng-submit="create()">
       <div class="col-md-8">
         <h2><span class="label label-default rounded">1</span> Create an issue </h2>
         <div class="">
           <label mean-token="'create-title'" class="control-label">Title</label>
           <div class="">
-            <input type="text" class="form-control ng-dirty" data-ng-model="title" id="title" placeholder="Title" required="">
+            <input type="text" class="form-control" data-ng-model="title" id="title" placeholder="Title" required="">
           </div>
         </div>
         <!--add phrase-->
         <div class="">
           <label mean-token="'edit-content'" for="content" class="control-label">Phrase</label>
           <div class="">
-            <input type="text" class="form-control ng-dirty" data-ng-model="phrase" id="phrase" placeholder="Phrase" required="">
+            <input type="text" class="form-control" data-ng-model="phrase" id="phrase" placeholder="Phrase" required="">
           </div>
         </div>
 
@@ -22,7 +22,7 @@
   
         <!-- TODO hide this when empty -->
         <div class="alert alert-info">
-          You don't have any motions!  Find some using the search bar on the right.
+          You don't have any motions! Find some using the search bar on the right.
         </div>
 
         <!--MOTIONS-->
@@ -57,12 +57,12 @@
     <h2>Available motions</h2>
     Find motions related to your issue <br><br>
 
-    <form class="navbar-form ng-dirty" role="search">
+    <form class="navbar-form" role="search">
 
       <div class="input-group">
-        <input type="text" class="form-control ng-dirty" placeholder="Search for Motions">
+        <input type="text" class="form-control" placeholder="Search for Motions">
         <span class="input-group-btn">
-          <button ng-click="getMotions()" class="btn btn-default" type="submit"><span class="glyphicon  glyphicon-search"></span> Search
+          <button ng-click="getMotions()" class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span> Search
           </button>
         </span>
       </div>
