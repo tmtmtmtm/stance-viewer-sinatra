@@ -1,1 +1,9 @@
-console.log("Loaded");
+
+$(document).ready(function() {
+    console.log("Ready");
+    $('#motionList button').click( function(e) {
+        alert('ID: ' + $(this).parent().attr('id'));
+    });
+});
+
+
