@@ -1,19 +1,19 @@
 :plain
   <div class="row">
-    <form class="form-horizontal  ng-dirty ng-valid ng-valid-required" role="form" data-ng-submit="create()">
+    <form class="form-horizontal  ng-dirty" role="form" data-ng-submit="create()">
       <div class="col-md-8">
         <h2><span class="label label-default rounded">1</span> Create an issue </h2>
         <div class="">
           <label mean-token="'create-title'" class="control-label">Title</label>
           <div class="">
-            <input type="text" class="form-control ng-dirty ng-valid ng-valid-required" data-ng-model="title" id="title" placeholder="Title" required="">
+            <input type="text" class="form-control ng-dirty" data-ng-model="title" id="title" placeholder="Title" required="">
           </div>
         </div>
         <!--add phrase-->
         <div class="">
           <label mean-token="'edit-content'" for="content" class="control-label">Phrase</label>
           <div class="">
-            <input type="text" class="form-control ng-dirty ng-valid ng-valid-required" data-ng-model="phrase" id="phrase" placeholder="Phrase" required="">
+            <input type="text" class="form-control ng-dirty" data-ng-model="phrase" id="phrase" placeholder="Phrase" required="">
           </div>
         </div>
 
@@ -27,13 +27,13 @@
         <!--MOTIONS-->
 
         <label>For this Issue</label>
-        <ul ng-model="selectedMotions" class="selectedMotions ng-pristine ng-valid">
+        <ul ng-model="selectedMotions" class="selectedMotions ng-pristine">
           <li class="list-group-item">
             <span ng-click="unselectMotion(motion)" class="glyphicon glyphicon-minus-sign actionable"></span> 
             This is the text of a motion for which a Yes vote is in favour of the Issue. It's long here, so we can see how wrapping works.
             <div class="btn-group pull-right">
-              <label class="btn btn-default btn-xs ng-pristine ng-valid" ng-model="motion.weight" btn-radio="2" ng-click="test(motion)">Strongly for</label>
-              <label class="btn btn-default btn-xs ng-pristine ng-valid" ng-model="motion.weight" btn-radio="1" ng-click="test(motion)">Moderately for</label>
+              <label class="btn btn-default btn-xs ng-pristine" ng-model="motion.weight" btn-radio="2" ng-click="test(motion)">Strongly for</label>
+              <label class="btn btn-default btn-xs ng-pristine" ng-model="motion.weight" btn-radio="1" ng-click="test(motion)">Moderately for</label>
             </div>
           </li>
         </ul>
@@ -41,7 +41,7 @@
         <br>
 
         <label>Against this Issue</label>
-        <ul ng-model="selectedMotions" class="selectedMotions ng-pristine ng-valid">
+        <ul ng-model="selectedMotions" class="selectedMotions ng-pristine">
             <!-- ngRepeat: motion in selectedMotions | filter:{type:'against'} -->
         </ul>
 
@@ -56,10 +56,10 @@
     <h2>Available motions</h2>
     Find motions related to your issue <br><br>
 
-    <form class="navbar-form ng-valid ng-dirty" role="search">
+    <form class="navbar-form ng-dirty" role="search">
 
       <div class="input-group">
-        <input type="text" class="form-control ng-valid ng-dirty" placeholder="Search for Motions" ng-model="searchTerm">
+        <input type="text" class="form-control ng-dirty" placeholder="Search for Motions" ng-model="searchTerm">
         <span class="input-group-btn">
           <button ng-click="getMotions()" class="btn btn-default" type="submit"><span class="glyphicon  glyphicon-search"></span> Search
           </button>
