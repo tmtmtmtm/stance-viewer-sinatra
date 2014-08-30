@@ -28,7 +28,7 @@
         <!--MOTIONS-->
 
         <label>For this Issue</label>
-        <ul class="selectedMotions">
+        <ul id="selected-for" class="selectedMotions">
           <li class="list-group-item">
             <span ng-click="unselectMotion(motion)" class="glyphicon glyphicon-minus-sign actionable"></span> 
             This is the text of a motion for which a Yes vote is in favour of the Issue. It's long here, so we can see how wrapping works.
@@ -42,8 +42,7 @@
         <br>
 
         <label>Against this Issue</label>
-        <ul class="selectedMotions">
-            <!-- ngRepeat: motion in selectedMotions | filter:{type:'against'} -->
+        <ul id="selected-against" class="selectedMotions">
         </ul>
 
 
