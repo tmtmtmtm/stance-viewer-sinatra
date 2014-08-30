@@ -28,7 +28,7 @@
 
         <label>For this Issue</label>
         <ul ng-model="selectedMotions" class="selectedMotions ng-pristine ng-valid">
-          <li class="list-group-item ng-binding">
+          <li class="list-group-item">
             <span ng-click="unselectMotion(motion)" class="glyphicon glyphicon-minus-sign actionable"></span> 
             This is the text of a motion for which a Yes vote is in favour of the Issue. It's long here, so we can see how wrapping works.
             <div class="btn-group pull-right">
@@ -72,37 +72,37 @@
       <div class="listCont">
         <ul id="motionList" class="list-unstyled">
 
-          <li id="motion-li-1" class="list-group-item ng-binding selected" ng-class="{selected: motion.type != undefined}">
+          <li id="motion-li-1" class="list-group-item selected" ng-class="{selected: motion.type != undefined}">
             <span id="motion-1">Motion description 1</span><br>
             <button type="button" ng-click="addMotion('for',motion-1)" class="btn btn-primary">For</button>
             <button type="button" ng-click="addMotion('against',motion-1)" class="btn btn-danger">Against</button>
           </li>
 
-          <li id="motion-li-2" class="list-group-item ng-binding selected" ng-class="{selected: motion.type != undefined}">
+          <li id="motion-li-2" class="list-group-item selected" ng-class="{selected: motion.type != undefined}">
             <span id="motion-2">Motion description 2</span><br>
             <button type="button" ng-click="addMotion('for',motion-1)" class="btn btn-primary">For</button>
             <button type="button" ng-click="addMotion('against',motion-1)" class="btn btn-danger">Against</button>
           </li>
 
-          <li id="motion-li-3" class="list-group-item ng-binding selected" ng-class="{selected: motion.type != undefined}">
+          <li id="motion-li-3" class="list-group-item selected" ng-class="{selected: motion.type != undefined}">
             <span id="motion-3">Motion description 3</span><br>
             <button type="button" ng-click="addMotion('for',motion-1)" class="btn btn-primary">For</button>
             <button type="button" ng-click="addMotion('against',motion-1)" class="btn btn-danger">Against</button>
           </li>
 
-          <li id="motion-li-4" class="list-group-item ng-binding selected" ng-class="{selected: motion.type != undefined}">
+          <li id="motion-li-4" class="list-group-item selected" ng-class="{selected: motion.type != undefined}">
             <span id="motion-4">Motion description 4</span><br>
             <button type="button" ng-click="addMotion('for',motion-1)" class="btn btn-primary">For</button>
             <button type="button" ng-click="addMotion('against',motion-1)" class="btn btn-danger">Against</button>
           </li>
 
-          <li id="motion-li-5" class="list-group-item ng-binding selected" ng-class="{selected: motion.type != undefined}">
+          <li id="motion-li-5" class="list-group-item selected" ng-class="{selected: motion.type != undefined}">
             <span id="motion-5">Motion description 5</span><br>
             <button type="button" ng-click="addMotion('for',motion-1)" class="btn btn-primary">For</button>
             <button type="button" ng-click="addMotion('against',motion-1)" class="btn btn-danger">Against</button>
           </li>
 
-          <li id="motion-li-6" class="list-group-item ng-binding selected" ng-class="{selected: motion.type != undefined}">
+          <li id="motion-li-6" class="list-group-item selected" ng-class="{selected: motion.type != undefined}">
             <span id="motion-6">Motion description 6</span><br>
             <button type="button" ng-click="addMotion('for',motion-1)" class="btn btn-primary">For</button>
             <button type="button" ng-click="addMotion('against',motion-1)" class="btn btn-danger">Against</button>
