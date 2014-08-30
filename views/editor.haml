@@ -27,13 +27,13 @@
         <!--MOTIONS-->
 
         <label>For this Issue</label>
-        <ul ng-model="selectedMotions" class="selectedMotions ng-pristine">
+        <ul ng-model="selectedMotions" class="selectedMotions">
           <li class="list-group-item">
             <span ng-click="unselectMotion(motion)" class="glyphicon glyphicon-minus-sign actionable"></span> 
             This is the text of a motion for which a Yes vote is in favour of the Issue. It's long here, so we can see how wrapping works.
             <div class="btn-group pull-right">
-              <label class="btn btn-default btn-xs ng-pristine" ng-model="motion.weight" btn-radio="2" ng-click="test(motion)">Strongly for</label>
-              <label class="btn btn-default btn-xs ng-pristine" ng-model="motion.weight" btn-radio="1" ng-click="test(motion)">Moderately for</label>
+              <label class="btn btn-default btn-xs" ng-model="motion.weight" btn-radio="2" ng-click="test(motion)">Strongly for</label>
+              <label class="btn btn-default btn-xs" ng-model="motion.weight" btn-radio="1" ng-click="test(motion)">Moderately for</label>
             </div>
           </li>
         </ul>
@@ -41,7 +41,7 @@
         <br>
 
         <label>Against this Issue</label>
-        <ul ng-model="selectedMotions" class="selectedMotions ng-pristine">
+        <ul ng-model="selectedMotions" class="selectedMotions">
             <!-- ngRepeat: motion in selectedMotions | filter:{type:'against'} -->
         </ul>
 
