@@ -27,13 +27,13 @@
         <!--MOTIONS-->
 
         <label>For this Issue</label>
-        <ul ng-model="selectedMotions" class="selectedMotions">
+        <ul class="selectedMotions">
           <li class="list-group-item">
             <span ng-click="unselectMotion(motion)" class="glyphicon glyphicon-minus-sign actionable"></span> 
             This is the text of a motion for which a Yes vote is in favour of the Issue. It's long here, so we can see how wrapping works.
             <div class="btn-group pull-right">
-              <label class="btn btn-default btn-xs" ng-model="motion.weight" btn-radio="2" ng-click="test(motion)">Strongly for</label>
-              <label class="btn btn-default btn-xs" ng-model="motion.weight" btn-radio="1" ng-click="test(motion)">Moderately for</label>
+              <label class="btn btn-default btn-xs" btn-radio="2" ng-click="test(motion)">Strongly for</label>
+              <label class="btn btn-default btn-xs" btn-radio="1" ng-click="test(motion)">Moderately for</label>
             </div>
           </li>
         </ul>
@@ -41,7 +41,7 @@
         <br>
 
         <label>Against this Issue</label>
-        <ul ng-model="selectedMotions" class="selectedMotions">
+        <ul class="selectedMotions">
             <!-- ngRepeat: motion in selectedMotions | filter:{type:'against'} -->
         </ul>
 
@@ -59,7 +59,7 @@
     <form class="navbar-form ng-dirty" role="search">
 
       <div class="input-group">
-        <input type="text" class="form-control ng-dirty" placeholder="Search for Motions" ng-model="searchTerm">
+        <input type="text" class="form-control ng-dirty" placeholder="Search for Motions">
         <span class="input-group-btn">
           <button ng-click="getMotions()" class="btn btn-default" type="submit"><span class="glyphicon  glyphicon-search"></span> Search
           </button>
