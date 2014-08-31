@@ -21,32 +21,31 @@
         <h2><span class="label label-default rounded">2</span> Add motions to your issue </h2>
   
         <!-- TODO hide this when empty -->
-        <div class="alert alert-info">
+        <div id="no-motions-yet" class="alert alert-info">
           You don't have any motions! Find some using the search bar on the right.
         </div>
 
         <!--MOTIONS-->
 
-        <label>For this Issue</label>
-        <ul id="selected-for" class="selectedMotions">
-          <li class="list-group-item">
-            <span ng-click="unselectMotion(motion)" class="glyphicon glyphicon-minus-sign actionable"></span> 
-            This is the text of a motion for which a Yes vote is in favour of the Issue. It's long here, so we can see how wrapping works.
-            <div class="btn-group pull-right">
-              <label class="btn btn-default btn-xs" btn-radio="2" ng-click="test(motion)">Strongly for</label>
-              <label class="btn btn-default btn-xs" btn-radio="1" ng-click="test(motion)">Moderately for</label>
-            </div>
-          </li>
-        </ul>
+        <div id="issue-motions">
+          <label>For this Issue</label>
+          <ul id="selected-for" class="selectedMotions">
+            <li class="list-group-item">
+              <span ng-click="unselectMotion(motion)" class="glyphicon glyphicon-minus-sign actionable"></span> 
+              This is the text of a motion for which a Yes vote is in favour of the Issue. It's long here, so we can see how wrapping works.
+              <div class="btn-group pull-right">
+                <label class="btn btn-default btn-xs" btn-radio="2" ng-click="test(motion)">Strongly for</label>
+                <label class="btn btn-default btn-xs" btn-radio="1" ng-click="test(motion)">Moderately for</label>
+              </div>
+            </li>
+          </ul>
 
-        <br>
+          <br>
 
-        <label>Against this Issue</label>
-
-        <ul id="selected-against" class="selectedMotions">
-        </ul>
-
-
+          <label>Against this Issue</label>
+          <ul id="selected-against" class="selectedMotions">
+          </ul>
+        </div>
 
         <h2><span class="label label-default rounded">3</span> Save </h2>
         <button class="btn btn-default" type="submit">Save</button>
