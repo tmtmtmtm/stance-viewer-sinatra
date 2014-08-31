@@ -5,7 +5,9 @@ $(document).ready(function() {
     function make_search_results_movable() { 
       $('#motionList button').click( function(e) {
           // console.log('ID: ' + $(this).parent().attr('id') + ": " + $(this).attr('data'));
-          $(this).parent('li').appendTo('#selected-'+$(this).attr('data'));
+          var m = $(this).parent('li')
+          m.appendTo('#selected-'+$(this).attr('data'));
+          m.prepend( $("<span>").addClass("glyphicon glyphicon-minus-sign actionable").text(" "));
           // next ... change the decoration when we move
           e.preventDefault();
       });
