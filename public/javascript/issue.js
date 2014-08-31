@@ -21,13 +21,13 @@ $(document).ready(function() {
 
     make_search_results_movable();
     $("#motion-search-form").submit(function(e) {
-        $("ul#motionList li").remove();
+        $("ul#motionList").empty().append("... searching");
         $.ajax({
             type: "GET",
             url: "/api/motions",
             data: $("#motion-search-form").serialize(),
             success: function(data) {
-                $("ul#motionList li").remove();
+                $("ul#motionList").empty();
                 jQuery.each(data, function(i, motion) {
                   $("ul#motionList").append( motion_html(motion['id'], motion['text']) );
                   console.log(motion['id'] + ": " + motion['text'])
