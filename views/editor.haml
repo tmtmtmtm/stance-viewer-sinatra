@@ -3,17 +3,25 @@
     <form class="form-horizontal" role="form" data-ng-submit="create()">
       <div class="col-md-8">
         <h2><span class="label label-default rounded">1</span> Create an issue </h2>
+
         <div class="">
-          <label mean-token="'create-title'" class="control-label">Title</label>
+          <label class="control-label">Title</label>
           <div class="">
-            <input type="text" class="form-control" id="title" placeholder="Title" required="">
+            <input type="text" class="form-control" id="title" placeholder="e.g. Climate Change" required="">
           </div>
         </div>
-        <!--add phrase-->
+
         <div class="">
-          <label mean-token="'edit-content'" for="content" class="control-label">Phrase</label>
+          <label class="control-label">Description</label>
           <div class="">
-            <input type="text" class="form-control" id="phrase" placeholder="Phrase" required="">
+            <input type="text" class="form-control" id="title" placeholder="e.g. measures to prevent climate change" required="">
+          </div>
+        </div>
+
+        <div class="">
+          <label for="content" class="control-label">Categories</label>
+          <div class="">
+            <input type="text" class="form-control" id="phrase" placeholder="e.g. environment, spending" required="">
           </div>
         </div>
 
