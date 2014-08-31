@@ -6,8 +6,14 @@ $(document).ready(function() {
     function strengthButtonGroup() {
         return $("<div>")
             .addClass("strengthButtons btn-group pull-right")
-            .append( $("<label>").addClass("btn btn-default btn-xs").text("Strong") )
-            .append( $("<label>").addClass("btn btn-default btn-xs").text("Moderate") );
+            .append( $("<label>").addClass("strong-aspect btn btn-default btn-xs").text("Strong").click(function() {
+              $(this).css({backgroundColor: 'green'});
+              $(this).siblings().css({backgroundColor: ''});
+            } ))
+            .append( $("<label>").addClass("moderate-aspect btn btn-default btn-xs").text("Moderate").click(function() {
+              $(this).css({backgroundColor: 'green'});
+              $(this).siblings().css({backgroundColor: ''});
+            } ));
     }
 
     function chooseButtonGroup() { 
