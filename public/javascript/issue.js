@@ -19,9 +19,10 @@ $(document).ready(function() {
     }
   
     function motion_html(motion) { 
-        return $("<li>").attr('id', motion['id']).addClass("list-group-item motion").text(motion['text'])
-          .append( strengthButtonGroup() )
-          .append( chooseButtonGroup() );
+        var pwurl = motion['id'].replace('pw-', 'http://www.publicwhip.org.uk/division.php?date=').replace(/\-(\d+)$/,"&number=$1");
+        return $("<li>").attr('id', motion['id']).addClass("list-group-item motion").append(
+            $("<span>").append(motion['text'] + " ").append( $("<a>", { text: '§', target: "_blank", href: pwurl }) )
+        ).append( strengthButtonGroup() ).append( chooseButtonGroup() );
     }
 
     
