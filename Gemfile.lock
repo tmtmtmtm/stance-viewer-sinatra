@@ -6,6 +6,7 @@ GEM
     haml (4.0.5)
       tilt
     json (1.8.1)
+    open-uri-cached (0.0.5)
     rack (1.5.2)
     redcarpet (2.3.0)
     sinatra (1.1.0)
@@ -23,6 +24,7 @@ PLATFORMS
 DEPENDENCIES
   haml
   json
+  open-uri-cached
   redcarpet
   sinatra (= 1.1.0)
   thin

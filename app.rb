@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'haml'
 require 'json'
+require 'open-uri/cached'
 
 get '/' do
   haml :index
