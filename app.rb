@@ -68,6 +68,20 @@ get '/issue/:id' do |id|
   haml :issue
 end
 
+require 'open-uri'
+require 'erb'
+get '/api/motions' do
+  content_type :json
+  s = params[:s].gsub("'",'%') # TODO better protection
+  query = "SELECT *, GROUP_CONCAT(policy) AS policies FROM data WHERE text LIKE '%#{s}%' GROUP BY id ORDER BY datetime DESC LIMIT 30"
+  morph_api_key = ENV['MORPH_API_KEY'] or raise "Need a Morph API key"
+  key = ERB::Util.url_encode(morph_api_key)
+  url = 'https://api.morph.io/tmtmtmtm/publicwhip_policies/data.json' + "?key=#{key}&query=" + ERB::Util.url_encode(query)
+  warn "Fetching #{url}"
+  return open(url).read
+end
+  
+
 helpers do
   def json_file(file)
     JSON.parse(File.read("data/#{file}.json"))
