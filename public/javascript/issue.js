@@ -47,8 +47,10 @@ $(document).ready(function() {
             type: "GET",
             url: "/api/motions",
             data: $("#motion-search-form").serialize(),
+            // TODO: failure
             success: function(data) {
                 $("ul#motionList").empty();
+                // TODO: zero results
                 jQuery.each(data, function(i, motion) {
                   $("ul#motionList").append( motion_html(motion) );
                   $("ul#motionList li .strengthButtons").hide();
