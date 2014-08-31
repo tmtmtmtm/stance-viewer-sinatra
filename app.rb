@@ -63,6 +63,14 @@ get '/compare/*/*' do |id1,id2|
   haml :compare
 end
 
+get '/issue/:issue/:person' do |issueid, mpid|
+  @issue  = issue_from_id(issueid) or pass
+  @person = person_from_id(mpid) or pass
+  @stance = person_stances(@person).find { |s| s['id'] == issueid } 
+  @party_stances = issue_stances(@issue)
+  haml :issue_mp
+end
+
 get '/issue/:id' do |id|
   @issue = issue_from_id(id) or pass
   @stances = issue_stances(@issue)

@@ -1,0 +1,11 @@
+
+#issue
+  %h1 On #{@issue['html']}, #{@person['name']}...
+
+  %p #{@stance}
+
+  %ul 
+    - @party_stances.each do |s|
+      %li #{s}
+      
+
