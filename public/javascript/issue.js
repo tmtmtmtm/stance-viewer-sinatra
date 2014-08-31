@@ -28,17 +28,16 @@ $(document).ready(function() {
     function make_search_results_movable() { 
       $('.chooseButtons button').click( function(e) {
           var dir = $(this).attr('data');
-          console.log("Adding to " + dir);
           var m = $(this).parents('li.motion')
           m.appendTo('#selected-'+dir);
           m.prepend( $("<span>").addClass("glyphicon glyphicon-minus-sign actionable").text(" "));
           m.find('button').hide();
           m.find('.strengthButtons').show();
+          $("#issue-motions li").length > 0 ? $("#no-motions-yet").hide() : $("#no-motions-yet").show();
           e.preventDefault();
       });
     }
 
-    make_search_results_movable();
     $("#motion-search-form").submit(function(e) {
         $("ul#motionList").empty().append("... searching");
         $.ajax({
@@ -50,12 +49,8 @@ $(document).ready(function() {
                 jQuery.each(data, function(i, motion) {
                   $("ul#motionList").append( motion_html(motion['id'], motion['text']) );
                   $("ul#motionList li .strengthButtons").hide();
-
-                  console.log(motion['id'] + ": " + motion['text'])
                 });
                 make_search_results_movable();
-                console.log("Have: " + $("#issue-motions li").length );
-                // $("#no-motions-yet").hide() 
             }
         });
         e.preventDefault();
