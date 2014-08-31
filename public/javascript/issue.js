@@ -2,7 +2,7 @@
 $(document).ready(function() {
     console.log("Ready");
 
-    // TODO make the buttons do something
+    // TODO store the selected value
     function strengthButtonGroup() {
         return $("<div>")
             .addClass("strengthButtons btn-group pull-right")
