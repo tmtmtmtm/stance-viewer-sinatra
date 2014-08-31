@@ -30,7 +30,9 @@ $(document).ready(function() {
           var dir = $(this).attr('data');
           var m = $(this).parents('li.motion')
           m.appendTo('#selected-'+dir);
-          m.prepend( $("<span>").addClass("glyphicon glyphicon-minus-sign actionable").text(" "));
+          m.prepend( $("<span>").addClass("glyphicon glyphicon-minus-sign actionable").click(function(e) { 
+            $(this).parents('li.motion').remove();
+          }));
           m.find('button').hide();
           m.find('.strengthButtons').show();
           $("#issue-motions li").length > 0 ? $("#no-motions-yet").hide() : $("#no-motions-yet").show();
