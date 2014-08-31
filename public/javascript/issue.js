@@ -4,10 +4,11 @@ $(document).ready(function() {
 
     // TODO make the buttons do something
     function strengthButtonGroup(direction) {
-        return '<div class="strengthButtons btn-group pull-right">' +
-            '<label class="btn btn-default btn-xs">Strong</label>' +
-            '<label class="btn btn-default btn-xs">Moderate</label>' +
-          '</div>';
+        return $("<div>").addClass("strengthButtons btn-group pull-right").append(
+          $("<label>").addClass("btn btn-default btn-xs").text("Strong")
+        ).append(
+          $("<label>").addClass("btn btn-default btn-xs").text("Moderate")
+        );
     }
   
     function motion_html(id, name) { 
