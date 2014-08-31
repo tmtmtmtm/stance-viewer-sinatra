@@ -56,10 +56,10 @@
     <h2>Available motions</h2>
     Find motions related to your issue <br><br>
 
-    <form class="navbar-form" role="search">
+    <form id="motion-search-form" class="navbar-form" role="search">
 
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="Search for Motions">
+        <input type="text" name="s" class="form-control" placeholder="Search for Motions">
         <span class="input-group-btn">
           <button ng-click="getMotions()" class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span> Search
           </button>
