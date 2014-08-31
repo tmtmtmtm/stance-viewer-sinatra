@@ -18,8 +18,8 @@ $(document).ready(function() {
         );
     }
   
-    function motion_html(id, name) { 
-        return $("<li>").attr('id', id).addClass("list-group-item motion").text(name)
+    function motion_html(motion) { 
+        return $("<li>").attr('id', motion['id']).addClass("list-group-item motion").text(motion['text'])
           .append( strengthButtonGroup() )
           .append( chooseButtonGroup() );
     }
@@ -49,7 +49,7 @@ $(document).ready(function() {
             success: function(data) {
                 $("ul#motionList").empty();
                 jQuery.each(data, function(i, motion) {
-                  $("ul#motionList").append( motion_html(motion['id'], motion['text']) );
+                  $("ul#motionList").append( motion_html(motion) );
                   $("ul#motionList li .strengthButtons").hide();
                 });
                 make_search_results_movable();
