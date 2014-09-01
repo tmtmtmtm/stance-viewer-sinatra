@@ -1,12 +1,13 @@
 
 #issue
-  %h1 On #{@issue['html']}, #{@person['name']}...
+  %h1 On #{@issue['html']}:
 
-  %p #{@stance['stance_text']}
+  %h2 #{@person['name']} voted <b>#{@stance['stance_text']}</b>.
 
-  %h2 #{@party['name']} = #{@party_stance['stance_text']}
+  %h3 #{@party['name']} voted <b>#{@party_stance['stance_text']}</b>.
 
-  - @hist.sort_by { |t, ss| ss.first.last['weight'] }.each do |text, stances|
-    %li #{text}: #{stances.count}
+  %ul
+    - @hist.sort_by { |t, ss| ss.first.last['weight'] }.each do |text, stances|
+      %li #{text}: #{stances.count}
 
 
