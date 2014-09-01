@@ -14,4 +14,8 @@
 
   %ul
     - @votes.each do |v|
-      %li #{v['text']}: <b>#{v['option']}</b> 
+      - if v['shortdesc']
+        %li #{v['shortdesc']}: <b>#{v['option']}</b> 
+      - else 
+        %li <i>#{v['text']}</i>: <b>#{v['option']}</b> 
+

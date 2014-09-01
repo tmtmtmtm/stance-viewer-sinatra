@@ -210,7 +210,7 @@ helpers do
 
   def person_votes(person, issue)
     query = <<-eosql
-      SELECT DISTINCT m.text, m.datetime, v.motion, v.option
+      SELECT DISTINCT m.text, m.datetime, v.motion, v.option, m.shortdesc
         FROM votes v
         JOIN voters mp ON v.url = mp.url
         JOIN data m ON v.motion = m.id
