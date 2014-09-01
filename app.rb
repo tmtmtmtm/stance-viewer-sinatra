@@ -129,7 +129,7 @@ helpers do
   end
 
   def party_histogram(issue, party)
-    party_member_stances(issue, party).reject { |mp, s| s['num_votes'].zero? }.group_by { |mp, s| sprintf '%.1f', s['weight'] }
+    party_member_stances(issue, party).reject { |mp, s| s['num_votes'].zero? }.group_by { |mp, s| stance_text(s) }
   end
 
   def person_stances(person)

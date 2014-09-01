@@ -6,8 +6,7 @@
 
   %h2 #{@party['name']} = #{@party_stance['stance_text']}
 
-  - 0.upto(10).map { |i| i.fdiv(10) }.each do |i|
-    %li #{i}: #{(@hist[i.to_s] || []).count }
+  - @hist.sort_by { |t, ss| ss.first.last['weight'] }.each do |text, stances|
+    %li #{text}: #{stances.count}
 
-  %p #{@hist}
 
