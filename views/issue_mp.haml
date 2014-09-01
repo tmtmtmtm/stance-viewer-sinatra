@@ -2,10 +2,12 @@
 #issue
   %h1 On #{@issue['html']}, #{@person['name']}...
 
-  %p #{@stance}
+  %p #{@stance['stance_text']}
 
-  %ul 
-    - @party_stances.each do |s|
-      %li #{s}
-      
+  %h2 #{@party['name']} = #{@party_stance['stance_text']}
+
+  - 0.upto(10).map { |i| i.fdiv(10) }.each do |i|
+    %li #{i}: #{(@hist[i.to_s] || []).count }
+
+  %p #{@hist}
 

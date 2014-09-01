@@ -66,8 +66,11 @@ end
 get '/issue/:issue/:person' do |issueid, mpid|
   @issue  = issue_from_id(issueid) or pass
   @person = person_from_id(mpid) or pass
+  party_id = most_recent_party(@person)
+  @party = party_from_id(party_id)
   @stance = person_stances(@person).find { |s| s['id'] == issueid } 
-  @party_stances = issue_stances(@issue)
+  @party_stance = party_stances(@party).find { |s| s['id'] == issueid }
+  @hist   = party_histogram(@issue, @party)
   haml :issue_mp
 end
 
@@ -119,6 +122,16 @@ helpers do
     }
   end
 
+  def party_member_stances(issue, party)
+    i = json_file('mpstances').detect { |i| i['id'] == issue['id'] } 
+    all_member_ids = party_members(party).map { |m| m['id'] }
+    return i['stances'].select { |mp,s| all_member_ids.include? mp }
+  end
+
+  def party_histogram(issue, party)
+    party_member_stances(issue, party).reject { |mp, s| s['num_votes'].zero? }.group_by { |mp, s| sprintf '%.1f', s['weight'] }
+  end
+
   def person_stances(person)
     json_file('mpstances').find_all {|s| s['stances'].has_key? person['id'] }.map { |s|
       s['stances'][person['id']].merge({
@@ -153,6 +166,14 @@ helpers do
       mem['start_date'] = Date.iso8601(mem['start_date']) if mem['start_date']
       mem['end_date']   = Date.iso8601(mem['end_date'])   if mem['end_date']
     }
+  end
+
+  def most_recent_party(person)
+    person['memberships'].find_all { 
+      |m| m['role'] == 'MP' 
+    }.sort_by { 
+      |m| m['start_date'] || '1000-01-01'
+    }.reverse.first['organization_id']
   end
 
   def stance_text(stance)
