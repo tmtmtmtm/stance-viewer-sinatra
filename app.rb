@@ -119,7 +119,7 @@ helpers do
         "text" => s['html'],
         "stance_text" => stance_text(s['stances'][party['id']]),
       })
-    }
+    }.reject { |s| s['num_votes'].zero? }
   end
 
   def party_member_stances(issue, party)
@@ -133,13 +133,13 @@ helpers do
   end
 
   def person_stances(person)
-    json_file('mpstances').find_all {|s| s['stances'].has_key? person['id'] }.map { |s|
-      s['stances'][person['id']].merge({
-        "id" => s['id'],
-        "text" => s['html'],
-        "stance_text" => stance_text(s['stances'][person['id']]),
+    json_file('mpstances').find_all {|i| i['stances'].has_key? person['id'] }.map { |i|
+      i['stances'][person['id']].merge({
+        "id" => i['id'],
+        "text" => i['html'],
+        "stance_text" => stance_text(i['stances'][person['id']]),
       })
-    }
+    }.reject { |s| s['num_votes'].zero? }
   end
 
   def issue_stances(issue)
@@ -148,7 +148,7 @@ helpers do
         "party" => party_from_id(k),
         "stance_text" => stance_text(v)
       })
-    }
+    }.reject { |s| s['num_votes'].zero? }
   end
 
   def party_members(party)
