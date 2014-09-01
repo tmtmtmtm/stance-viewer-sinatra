@@ -10,4 +10,8 @@
     - @hist.sort_by { |t, ss| ss.first.last['weight'] }.each do |text, stances|
       %li #{text}: #{stances.count}
 
+  %p Individual Votes
 
+  %ul
+    - @votes.each do |v|
+      %li #{v['text']}: <b>#{v['option']}</b> 

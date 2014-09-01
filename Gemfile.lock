@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    colorize (0.6.0)
     daemons (1.1.9)
     eventmachine (1.0.3)
     haml (4.0.5)
@@ -22,6 +23,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  colorize
   haml
   json
   open-uri-cached

@@ -2,6 +2,7 @@ require 'sinatra'
 require 'haml'
 require 'json'
 require 'open-uri/cached'
+require 'colorize'
 
 get '/' do
   haml :index
@@ -71,6 +72,7 @@ get '/issue/:issue/:person' do |issueid, mpid|
   @stance = person_stances(@person).find { |s| s['id'] == issueid } 
   @party_stance = party_stances(@party).find { |s| s['id'] == issueid }
   @hist   = party_histogram(@issue, @party)
+  @votes  = person_votes(@person, @issue)
   haml :issue_mp
 end
 
@@ -124,6 +126,12 @@ helpers do
   def party_histogram(issue, party)
     party_member_stances(issue, party).reject { |mp, s| s['num_votes'].zero? }.group_by { |mp, s| stance_text(s) }
   end
+
+  def public_whip_id(person)
+    i = person['other_identifiers'].find { |i| i['scheme'] == 'publicwhip.org' } or return
+    i['identifier']
+  end
+
 
   def person_stances(person)
     json_file('mpstances').find_all {|i| i['stances'].has_key? person['id'] }.map { |i|
@@ -185,9 +193,8 @@ helpers do
   require 'open-uri'
   require 'erb'
 
-  def motion_search(query_string)
-    s = params[:s].gsub("'",'%') # TODO better protection
-    query = "SELECT *, GROUP_CONCAT(policy) AS policies FROM data WHERE text LIKE '%#{s}%' GROUP BY id ORDER BY datetime DESC LIMIT 30"
+  def morph_select(qs)
+    query = qs.gsub(/\s+/, ' ').strip
     morph_api_key = ENV['MORPH_API_KEY'] or raise "Need a Morph API key"
     key = ERB::Util.url_encode(morph_api_key)
     url = 'https://api.morph.io/tmtmtmtm/publicwhip_policies/data.json' + "?key=#{key}&query=" + ERB::Util.url_encode(query)
@@ -195,6 +202,24 @@ helpers do
     return open(url).read
   end
 
+  def motion_search(query_string)
+    s = query_string.gsub("'",'%') # TODO better protection
+    query = "SELECT *, GROUP_CONCAT(policy) AS policies FROM data WHERE text LIKE '%#{s}%' GROUP BY id ORDER BY datetime DESC LIMIT 30"
+    morph_select(query)
+  end
+
+  def person_votes(person, issue)
+    query = <<-eosql
+      SELECT DISTINCT m.text, m.datetime, v.motion, v.option
+        FROM votes v
+        JOIN voters mp ON v.url = mp.url
+        JOIN data m ON v.motion = m.id
+       WHERE m.policy = #{issue['id'].gsub(/^PW-/,'')}
+         AND mp.id = #{public_whip_id(person)}
+       ORDER BY m.datetime DESC
+    eosql
+    JSON.parse( morph_select(query) )
+  end
 
 end
 
