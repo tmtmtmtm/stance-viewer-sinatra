@@ -6,7 +6,8 @@
 
   %p #{@issue_info[3]}
 
-  %h2 #{@person['name']} 
+  %h2 
+    %a{:href =>"/person/#{@person['id']}"}#{@person['name']} 
   
   %li voted <b>#{@stance['stance_text']}</b> #{@issue['html']}.
 
