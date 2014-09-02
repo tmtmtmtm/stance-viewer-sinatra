@@ -1,16 +1,22 @@
 
 #issue
-  %h1 On #{@issue['html']}:
+  %h1 On #{@issue_info[2]}:
 
-  %h2 #{@person['name']} voted <b>#{@stance['stance_text']}</b>.
+  %div.photo <iframe src="#{@issue_info[5]}/player" width="500" height="375" frameborder="0" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
 
-  %h3 #{@party['name']} voted <b>#{@party_stance['stance_text']}</b>.
+  %p #{@issue_info[3]}
+
+  %h2 #{@person['name']} 
+  
+  %li voted <b>#{@stance['stance_text']}</b> #{@issue['html']}.
+
+  %li #{@party['name']} voted <b>#{@party_stance['stance_text']}</b>.
 
   %ul
     - @hist.sort_by { |t, ss| ss.first.last['weight'] }.each do |text, stances|
       %li #{text}: #{stances.count}
 
-  %p Individual Votes
+  %h3 Individual Votes
 
   %ul
     - @votes.each do |v|
@@ -18,4 +24,5 @@
         %li #{v['shortdesc']}: <b>#{v['option']}</b> 
       - else 
         %li <i>#{v['text']}</i>: <b>#{v['option']}</b> 
+
 

@@ -67,6 +67,8 @@ end
 get '/issue/:issue/:person' do |issueid, mpid|
   @issue  = issue_from_id(issueid) or pass
   @person = person_from_id(mpid) or pass
+
+  @issue_info = issue_info(issueid.sub('PW-',''))
   party_id = most_recent_party(@person)
   @party = party_from_id(party_id)
   @stance = person_stances(@person).find { |s| s['id'] == issueid } 
@@ -188,6 +190,14 @@ helpers do
     return "very strongly against"        
   end
 
+  require 'csv'
+  def issue_info(issueid)
+    CSV.foreach('data/spreadsheet.csv') do |row|
+      next unless row[0] == issueid
+      return row
+    end
+    return
+  end
 
 
   require 'open-uri'
