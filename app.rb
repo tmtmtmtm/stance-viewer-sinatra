@@ -74,7 +74,11 @@ get '/issue/:issue/:person' do |issueid, mpid|
   @stance = person_stances(@person).find { |s| s['id'] == issueid } 
   @party_stance = party_stances(@party).find { |s| s['id'] == issueid }
   @hist   = party_histogram(@issue, @party)
-  @votes  = person_votes(@person, @issue)
+  @votes  = person_votes(@person, @issue).map { |v| 
+    # Ugh
+    v['pw_url'] = v['motion'].sub('pw-', 'http://www.publicwhip.org.uk/division.php?date=').reverse.sub('-', '=rebmun&').reverse
+    v
+  }
   haml :issue_mp
 end
 
