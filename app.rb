@@ -74,11 +74,7 @@ get '/issue/:issue/:person' do |issueid, mpid|
   @stance = person_stances(@person).find { |s| s['id'] == issueid } 
   @party_stance = party_stances(@party).find { |s| s['id'] == issueid }
   @hist   = party_histogram(@issue, @party)
-  @votes  = person_votes(@person, @issue).map { |v| 
-    # Ugh
-    v['pw_url'] = v['motion'].sub('pw-', 'http://www.publicwhip.org.uk/division.php?date=').reverse.sub('-', '=rebmun&').reverse
-    v
-  }
+  @votes  = person_votes(@person, @issue)
   haml :issue_mp
 end
 
@@ -222,18 +218,28 @@ helpers do
     morph_select(query)
   end
 
-  def person_votes(person, issue)
+  def morph_votes(personid, issueid)
     query = <<-eosql
       SELECT DISTINCT m.text, m.datetime, v.motion, v.option, m.shortdesc
         FROM votes v
         JOIN voters mp ON v.url = mp.url
         JOIN data m ON v.motion = m.id
-       WHERE m.policy = #{issue['id'].gsub(/^PW-/,'')}
-         AND mp.id = #{public_whip_id(person)}
+       WHERE m.policy = #{issueid.to_i}
+         AND mp.id = #{personid.to_i}
        ORDER BY m.datetime DESC
     eosql
     JSON.parse( morph_select(query) )
   end
+
+  def person_votes(person, issue)
+    morph_votes(public_whip_id(person), issue['id'].gsub(/^PW-/,'')).map do |v|
+      # motion is of the form: pw-2003-01-08-42
+      md = v['motion'].match(/pw-(?<date>\d{4}-\d{2}-\d{2})-(?<number>\d+)/) or raise "weird motion id: #{v['motion']}"
+      v['pw_url'] = 'http://www.publicwhip.org.uk/division.php?date=%s&number=%d' % [md[:date], md[:number]]
+      v
+    end
+  end
+
 
 end
 
