@@ -220,7 +220,7 @@ helpers do
 
   def morph_votes(personid, issueid)
     query = <<-eosql
-      SELECT DISTINCT m.text, m.datetime, v.motion, v.option, m.shortdesc
+      SELECT DISTINCT m.text, m.datetime, v.motion, v.option, m.shortdesc, m.result
         FROM votes v
         JOIN voters mp ON v.url = mp.url
         JOIN data m ON v.motion = m.id
@@ -231,11 +231,32 @@ helpers do
     JSON.parse( morph_select(query) )
   end
 
+  def vote_display(v)
+    fallback = "#{v['option']} on #{v['text']}"
+    aye_txt = v['desc']['aye'].empty? ? fallback : v['desc']['aye'] 
+    return "voted #{aye_txt}" if v['option'] == 'yes' 
+
+    nay_txt = v['desc']['aye'].empty? ? fallback : v['desc']['nay'] 
+    return "voted #{nay_txt}" if v['option'] == 'no'
+
+    maj_txt = v['desc']['aye'].empty? ? "on #{v['text']}" : "when the majority of MPs voted " + (v['result'] == 'passed' ? aye_txt : nay_txt)
+
+    return "did not vote #{maj_txt}" if v['option'] = 'absent'
+    return "voted both yes and no #{maj_txt}" if v['option'] = 'both'
+    raise "Don't know how to display vote"
+  end
+
   def person_votes(person, issue)
+    described_votes = json_file('pw_divisions')
     morph_votes(public_whip_id(person), issue['id'].gsub(/^PW-/,'')).map do |v|
+      v['datetime'] = DateTime.parse(v['datetime'])
       # motion is of the form: pw-2003-01-08-42
       md = v['motion'].match(/pw-(?<date>\d{4}-\d{2}-\d{2})-(?<number>\d+)/) or raise "weird motion id: #{v['motion']}"
       v['pw_url'] = 'http://www.publicwhip.org.uk/division.php?date=%s&number=%d' % [md[:date], md[:number]]
+      v['desc'] = described_votes.find { |dv| 
+        dv['date'] == md[:date] && dv['number'].to_i == md[:number].to_i 
+      } || {'aye' => '', 'nay' => ''}
+      v['display_text'] = vote_display(v)
       v
     end
   end

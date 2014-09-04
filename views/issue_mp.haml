@@ -20,12 +20,7 @@
   %h3 Individual Votes
 
   %ul
-    - @votes.each do |v|
-      %li
-        - if v['shortdesc']
-          #{v['shortdesc']}: 
-        - else 
-          <i>#{v['text']}</i>: 
-        <b><a href="#{v['pw_url']}">#{v['option']}</a></b>
+    - @votes.sort_by { |v| v['datetime'] }.reverse.each do |v|
+      %li On #{v['datetime'].to_date.strftime("%b %-e, %Y")}, #{v['display_text']} <a href="#{v['pw_url']}">(PW)</a>
 
 
