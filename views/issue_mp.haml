@@ -19,8 +19,19 @@
 
   %h3 Individual Votes
 
-  %ul
+  %ul#votes
     - @votes.sort_by { |v| v['datetime'] }.reverse.each do |v|
       %li{:class => v['direction'][/strong/i] ? 'strong' : 'weak'} On #{v['datetime'].to_date.strftime("%b %-e, %Y")}, #{v['display_text']} <a href="#{v['pw_url']}">(PW)</a>
+
+:javascript
+    $(document).ready( function() {
+      $('#votes .weak').hide();
+      $('ul#votes').prepend('<p id="pi"><b>Only important votes are shown. Click <button id="toggler">here</button> to show all votes.</b></p>');
+      $('#toggler').click( function() { 
+        $('#votes .weak').show();
+        $('#votes .strong').css("font-weight", "bold");
+        $('p#pi').hide();
+      });
+    });
 
 
