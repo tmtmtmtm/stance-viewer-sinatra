@@ -25,13 +25,15 @@
 
 :javascript
     $(document).ready( function() {
-      $('#votes .weak').hide();
-      $('ul#votes').prepend('<p id="pi"><b>Only important votes are shown. Click <button id="toggler">here</button> to show all votes.</b></p>');
-      $('#toggler').click( function() { 
-        $('#votes .weak').show();
-        $('#votes .strong').css("font-weight", "bold");
-        $('p#pi').hide();
-      });
+      if ($('#votes .weak').length) { 
+        $('#votes .weak').hide();
+        $('ul#votes').prepend('<p id="pi"><b>Only important votes are shown. Click <button id="toggler">here</button> to show all votes.</b></p>');
+        $('#toggler').click( function() { 
+          $('#votes .weak').show();
+          $('#votes .strong').css("font-weight", "bold");
+          $('p#pi').hide();
+        });
+      }
     });
 
 
