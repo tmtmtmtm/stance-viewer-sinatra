@@ -220,7 +220,7 @@ helpers do
 
   def morph_votes(personid, issueid)
     query = <<-eosql
-      SELECT DISTINCT m.text, m.datetime, v.motion, v.option, m.shortdesc, m.result
+      SELECT DISTINCT m.text, m.datetime, m.direction, v.motion, v.option, m.shortdesc, m.result
         FROM votes v
         JOIN voters mp ON v.url = mp.url
         JOIN data m ON v.motion = m.id

@@ -21,6 +21,6 @@
 
   %ul
     - @votes.sort_by { |v| v['datetime'] }.reverse.each do |v|
-      %li On #{v['datetime'].to_date.strftime("%b %-e, %Y")}, #{v['display_text']} <a href="#{v['pw_url']}">(PW)</a>
+      %li{:class => v['direction'][/strong/i] ? 'strong' : 'weak'} On #{v['datetime'].to_date.strftime("%b %-e, %Y")}, #{v['display_text']} <a href="#{v['pw_url']}">(PW)</a>
 
 
