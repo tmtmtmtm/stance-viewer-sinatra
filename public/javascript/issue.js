@@ -16,6 +16,12 @@ $(document).ready(function() {
             } ));
     }
 
+    function indicatorDescription() { 
+        return $("<div>")
+            .addClass("indicatorDescription")
+            .append( $("<input>", { type: 'text', name: 'indesc', placeholder: 'motion summary', size: 180 }) )
+    }
+    
     function chooseButtonGroup() { 
         return $("<div>").addClass("chooseButtons").append(
           $("<button>").attr('type', 'button').attr('data', 'for').addClass("btn btn-primary").text("For")
@@ -28,7 +34,10 @@ $(document).ready(function() {
         var pwurl = motion['id'].replace('pw-', 'http://www.publicwhip.org.uk/division.php?date=').replace(/\-(\d+)$/,"&number=$1");
         return $("<li>").attr('id', motion['id']).addClass("list-group-item motion").append(
             $("<span>").append(motion['text'] + " ").append( $("<a>", { text: '§', target: "_blank", href: pwurl }) )
-        ).append( strengthButtonGroup() ).append( chooseButtonGroup() );
+        )
+        .append( indicatorDescription() )
+        .append( strengthButtonGroup() )
+        .append( chooseButtonGroup() );
     }
 
     
@@ -42,6 +51,7 @@ $(document).ready(function() {
           }));
           m.find('button').hide();
           m.find('.strengthButtons').show();
+          m.find('.indicatorDescription').show();
           $("#issue-motions li").length > 0 ? $("#no-motions-yet").hide() : $("#no-motions-yet").show();
           e.preventDefault();
       });
@@ -60,6 +70,7 @@ $(document).ready(function() {
                 jQuery.each(data, function(i, motion) {
                   $("ul#motionList").append( motion_html(motion) );
                   $("ul#motionList li .strengthButtons").hide();
+                  $("ul#motionList li .indicatorDescription").hide();
                 });
                 make_search_results_movable();
             }
