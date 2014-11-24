@@ -5,16 +5,23 @@
         <h2><span class="label label-default rounded">1</span> Create an issue </h2>
 
         <div class="">
-          <label class="control-label">Title</label>
+          <label class="control-label">Short Title</label>
           <div class="">
             <input type="text" class="form-control" id="title" placeholder="e.g. Climate Change" required="">
           </div>
         </div>
 
         <div class="">
-          <label class="control-label">Description</label>
+          <label class="control-label">Introductory Sentence</label>
           <div class="">
-            <input type="text" class="form-control" id="title" placeholder="e.g. measures to prevent climate change" required="">
+            <input type="text" class="form-control" id="title" placeholder="e.g. Climate Change" required="">
+          </div>
+        </div>
+
+        <div class="">
+          <label class="control-label">Stance Description</label>
+          <div class="">
+            <i>Person X voted strongly for/against…</i> <input type="text" class="form-control" id="title" placeholder="e.g. measures to prevent climate change" required="">
           </div>
         </div>
 
@@ -25,12 +32,19 @@
           </div>
         </div>
 
+        <div class="">
+          <label for="content" class="control-label">Image</label>
+          <div class="">
+            <input type="text" class="form-control" id="phrase" placeholder="(must be suitably licensed)" required="">
+          </div>
+        </div>
+
 
         <h2><span class="label label-default rounded">2</span> Add motions to your issue </h2>
   
         <!-- TODO hide this when empty -->
         <div id="no-motions-yet" class="alert alert-info">
-          You don't have any motions! Find some using the search bar on the right.
+          You haven't added any motions yet. Find some using the search bar on the right.
         </div>
 
         <!--MOTIONS-->
