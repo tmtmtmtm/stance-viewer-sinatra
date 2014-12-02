@@ -88,7 +88,20 @@ get '/api/motions' do
   content_type :json
   motion_search(params[:s].gsub("'",'%')) # TODO better protection
 end
-  
+
+get '/api/issues' do
+  content_type :json
+  # I _could_ just dump the file straight out, but that has the feel of
+  # an optimisation that will need to be undone later. Live with this
+  # for now.
+  json_file('issues').to_json
+end
+
+get '/api/issue/:id' do |id|
+  content_type :json
+  issue = issue_from_id(id) or pass
+  issue.to_json
+end
 
 helpers do
 
