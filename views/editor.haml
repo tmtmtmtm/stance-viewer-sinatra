@@ -1,71 +1,96 @@
 :plain
   <div class="row">
-    <form class="form-horizontal" role="form" data-ng-submit="create()">
-      <div class="col-md-8">
-        <h2><span class="label label-default rounded">1</span> Create an issue </h2>
 
-        <div class="">
-          <label class="control-label">Short Title</label>
+    <div class="col-md-8">
+      <div id="creatorChoice">
+        <h2><span class="label label-default rounded">1</span> Create a new Issue
+        <button id="newIssueButton" class="btn btn-default pull-right">Go</button> </h2>
+      </div>
+
+      <div id="editorChoice">
+        <h2><span class="label label-default rounded">or</span> Edit an existing Issue 
+        <button id="loadIssuesButton" class="btn btn-default pull-right">Go</button> </h2>
+        <ul id="issueList">
+        </ul>
+      </div>
+
+      <!--SAVE-->
+
+      <div id="issueSection">
+        <h2><span class="label label-default rounded">2</span> Issue Data </h2>
+
+        <form id="issueEditor" class="form-horizontal" role="form" data-ng-submit="create()">
+
           <div class="">
-            <input type="text" class="form-control" id="title" placeholder="e.g. Climate Change" required="">
+            <label class="control-label">Short Title</label>
+            <div class="">
+              <input type="text" class="form-control" id="title" placeholder="e.g. Climate Change" required="">
+            </div>
+          </div>
+
+          <div class="">
+            <label class="control-label">Introductory Sentence</label>
+            <div class="">
+              <input type="text" class="form-control" id="title" placeholder="e.g. Climate Change" required="">
+            </div>
+          </div>
+
+          <div class="">
+            <label class="control-label">Stance Description</label>
+            <div class="">
+              <i>Person X voted strongly for/against…</i> <input type="text" class="form-control" id="title" placeholder="e.g. measures to prevent climate change" required="">
+            </div>
+          </div>
+
+          <div class="">
+            <label for="content" class="control-label">Categories</label>
+            <div class="">
+              <input type="text" class="form-control" id="phrase" placeholder="e.g. environment, spending" required="">
+            </div>
+          </div>
+
+          <div class="">
+            <label for="content" class="control-label">Image</label>
+            <div class="">
+              <input type="text" class="form-control" id="phrase" placeholder="(must be suitably licensed)" required="">
+            </div>
           </div>
         </div>
 
-        <div class="">
-          <label class="control-label">Introductory Sentence</label>
-          <div class="">
-            <input type="text" class="form-control" id="title" placeholder="e.g. Climate Change" required="">
-          </div>
-        </div>
-
-        <div class="">
-          <label class="control-label">Stance Description</label>
-          <div class="">
-            <i>Person X voted strongly for/against…</i> <input type="text" class="form-control" id="title" placeholder="e.g. measures to prevent climate change" required="">
-          </div>
-        </div>
-
-        <div class="">
-          <label for="content" class="control-label">Categories</label>
-          <div class="">
-            <input type="text" class="form-control" id="phrase" placeholder="e.g. environment, spending" required="">
-          </div>
-        </div>
-
-        <div class="">
-          <label for="content" class="control-label">Image</label>
-          <div class="">
-            <input type="text" class="form-control" id="phrase" placeholder="(must be suitably licensed)" required="">
-          </div>
-        </div>
-
-
-        <h2><span class="label label-default rounded">2</span> Add motions to your issue </h2>
-  
-        <!-- TODO hide this when empty -->
-        <div id="no-motions-yet" class="alert alert-info">
-          You haven't added any motions yet. Find some using the search bar on the right.
-        </div>
 
         <!--MOTIONS-->
 
-        <div id="issue-motions">
-          <label>For this Issue</label>
-          <ul id="selected-for" class="selectedMotions">
-          </ul>
+        <div id="motionSection">
 
-          <br>
+          <h2><span class="label label-default rounded">3</span> Add motions to your issue </h2>
+    
+          <div id="no-motions-yet" class="alert alert-info">
+            You haven't added any motions yet. Find some using the search bar on the right.
+          </div>
 
-          <label>Against this Issue</label>
-          <ul id="selected-against" class="selectedMotions">
-          </ul>
+          <div id="issue-motions">
+            <label>For this Issue</label>
+            <ul id="selected-for" class="selectedMotions">
+            </ul>
+
+            <br>
+
+            <label>Against this Issue</label>
+            <ul id="selected-against" class="selectedMotions">
+            </ul>
+          </div>
         </div>
 
-        <h2><span class="label label-default rounded">3</span> Save </h2>
-        <button class="btn btn-default pull-right" type="submit">Save</button>
+        <!--SAVE-->
+
+        <div id="saveSection">
+          <h2><span class="label label-default rounded">4</span> Save </h2>
+          <button class="btn btn-default pull-right" type="submit">Save</button>
+        </div>
       </div>
-    </form>
-  </div>
+
+    </div>
+  </form>
 
   <aside class="col-md-4 inverse motionSearch">  
     <!--SEARCH MOTIONS-->
@@ -92,3 +117,4 @@
       </div>
     </form>
   </aside>
+

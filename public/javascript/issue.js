@@ -1,6 +1,11 @@
 
 $(document).ready(function() {
     console.log("Ready");
+    $("#issueSection").hide();
+    $("#motionSection").hide();
+    $("#saveSection").hide();
+
+
 
     // TODO store the selected value
     function strengthButtonGroup() {
@@ -56,6 +61,37 @@ $(document).ready(function() {
           e.preventDefault();
       });
     }
+
+    $("#newIssueButton").click(function(e) { 
+      console.log("New Issue!");
+      $("#editorChoice").hide();
+      $("#creatorChoice button").hide();
+      $("#issueSection").show();
+      $("#motionSection").show();
+      $("#saveSection").show();
+      e.preventDefault();
+    });
+
+    $("#loadIssuesButton").click(function(e) { 
+      console.log("New Issue!");
+      $.ajax({
+          type: "GET",
+          url: "/api/issues",
+          // TODO: failure
+          success: function(data) {
+              $("ul#issueList").empty();
+              // TODO: zero results
+              jQuery.each(data, function(i, issue) {
+                console.log(issue['text']);
+                $("ul#issueList").append( $("<li>").text(issue['text']) );
+              });
+          }
+      });
+      $("#creatorChoice").hide();
+      $("#editorChoice button").hide();
+      $("#editorChoice span.label").text("1");
+      e.preventDefault();
+    });
 
     $("#motion-search-form").submit(function(e) {
         $("ul#motionList").empty().append("... searching");
