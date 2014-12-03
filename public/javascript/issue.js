@@ -75,7 +75,7 @@ $(document).ready(function() {
     });
 
     $("#loadIssuesButton").click(function(e) { 
-      console.log("New Issue!");
+      console.log("Get Issue List!");
       $.ajax({
           type: "GET",
           url: "/api/issues",
@@ -87,14 +87,24 @@ $(document).ready(function() {
                   var link = $("<a>", { text: issue['text'], href: "#" }).click(function(e) {
                       console.log("Clicked " + issue['id']);
                       console.log(issue);
-                      $("#issueSection").show();
+                      // TODO show something whilst waiting
+                      $.ajax({
+                          type: "GET",
+                          url: "/api/issue/" + issue['id'],
+                          success: function(data) { 
+                              console.log(data);
+                              $("#issueEditor #title").val(data['text']);
+                              $("#issueEditor #description").val(data['html']);
+                              $("#issueEditor #sentence").val(data['sentence']);
+                              $("#issueEditor #categories").val(data['categories'].join(", "));
+                              $("#issueEditor #image").val(data['image']);
+                              // TODO add indicators
+                              $("#issueSection").show();
+                              $("#motionSection").show();
+                              $("#saveSection").show();
+                          }
+                      });
                       $("#editorChoice").hide();
-                      $("#issueEditor #title").val(issue['text']);
-                      $("#issueEditor #description").val(issue['html']);
-                      $("#issueEditor #categories").val(issue['categories'].join(", "));
-                      // TODO add indicators
-                      $("#motionSection").show();
-                      $("#saveSection").show();
                       e.preventDefault();
                   });
                   $("ul#issueList").append($("<li>").append(link));
