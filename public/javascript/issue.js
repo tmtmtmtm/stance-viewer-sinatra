@@ -62,6 +62,8 @@ $(document).ready(function() {
       });
     }
 
+  // TODO all the hide()/show() stuff should be based on classes that say
+  // which things they appear in, rather than called by name
     $("#newIssueButton").click(function(e) { 
       console.log("New Issue!");
       $("#editorChoice").hide();
@@ -82,8 +84,20 @@ $(document).ready(function() {
               $("ul#issueList").empty();
               // TODO: zero results
               jQuery.each(data, function(i, issue) {
-                console.log(issue['text']);
-                $("ul#issueList").append( $("<li>").text(issue['text']) );
+                  var link = $("<a>", { text: issue['text'], href: "#" }).click(function(e) {
+                      console.log("Clicked " + issue['id']);
+                      console.log(issue);
+                      $("#issueSection").show();
+                      $("#editorChoice").hide();
+                      $("#issueEditor #title").val(issue['text']);
+                      $("#issueEditor #description").val(issue['html']);
+                      $("#issueEditor #categories").val(issue['categories'].join(", "));
+                      // TODO add indicators
+                      $("#motionSection").show();
+                      $("#saveSection").show();
+                      e.preventDefault();
+                  });
+                  $("ul#issueList").append($("<li>").append(link));
               });
           }
       });
