@@ -99,9 +99,8 @@ end
 
 get '/api/issue/:id' do |id|
   content_type :json
-  issue = issue_from_id(id) or pass
-  extra = issue_extras(id.sub(/^PW-/,''))
-  issue.merge(extra).to_json
+  issue = full_issue(id) or pass
+  issue.to_json
 end
 
 helpers do
@@ -118,6 +117,13 @@ helpers do
     json_file('people').detect { |p| p['id'] == id } 
   end
 
+  def full_issue(id)
+    issue = json_file('issues').detect { |i| i['id'] == id } or return
+    extra = issue_extras(id.sub(/^PW-/,''))
+    issue.merge(extra)
+  end
+
+  # FIXME this is misnamed; some things rely on this being partystances
   def issue_from_id(id)
     json_file('partystances').detect { |i| i['id'] == id } 
   end

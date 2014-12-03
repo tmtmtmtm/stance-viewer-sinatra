@@ -53,6 +53,10 @@ describe "API" do
       json['image'].must_equal 'https://www.flickr.com/photos/friendly-fire/33431056'
     end
 
+    it "should contain some indicators" do
+      json['indicators'].size.must_be :>, 2
+    end
+
   end
 
   #-------------------------------------------------------------------
