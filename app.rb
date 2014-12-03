@@ -100,7 +100,8 @@ end
 get '/api/issue/:id' do |id|
   content_type :json
   issue = issue_from_id(id) or pass
-  issue.to_json
+  extra = issue_extras(id.sub(/^PW-/,''))
+  issue.merge(extra).to_json
 end
 
 helpers do
@@ -204,6 +205,7 @@ helpers do
   end
 
   require 'csv'
+  # TODO replace calls to this to ones below
   def issue_info(issueid)
     CSV.foreach('data/spreadsheet.csv') do |row|
       next unless row[0] == issueid
@@ -212,6 +214,13 @@ helpers do
     return
   end
 
+  def issue_extras(issueid)
+    CSV.foreach('data/spreadsheet.csv', { :converters => :all, :headers => :true }) do |row|
+      next unless row['policyid'].to_i == issueid.to_i
+      return row.to_hash
+    end
+    return
+  end
 
   require 'open-uri'
   require 'erb'
