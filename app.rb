@@ -176,9 +176,8 @@ helpers do
     }.reject { |s| s['num_votes'].zero? }
   end
 
-  # FIXME relies on @issue already being set
   def issue_stances(issue)
-    @issue['stances'].reject { |k,v| k[/peaker/] }.map { |k, v|
+    issue['stances'].reject { |k,v| k[/peaker/] }.map { |k, v|
       v.merge({
         "party" => party_from_id(k),
         "stance_text" => stance_text(v)
