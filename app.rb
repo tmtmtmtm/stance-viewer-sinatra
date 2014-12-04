@@ -46,15 +46,6 @@ get '/person/:id' do |id|
   haml :person
 end
 
-get '/person/*/vs/*' do |id1,id2|
-  @p1 = person_from_id(id1) or pass
-  @p2 = party_from_id(id2) or pass
-  s1 = person_stances(@p1) 
-  s2 = party_stances(@p2) 
-  @merged = (s1 + s2).group_by { |s| s['id'] }.reject { |k,v| v.count != 2 }
-  haml :person_party
-end
-
 get '/issue/:issue/:person' do |issueid, mpid|
   @issue  = issue_from_id(issueid) or pass
   @person = person_from_id(mpid) or pass
