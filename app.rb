@@ -4,13 +4,21 @@ require 'json'
 require 'open-uri/cached'
 require 'colorize'
 
+#---------------------------------------------------------------------
+# Static pages
+#---------------------------------------------------------------------
+
 get '/' do
   haml :index
 end
 
-get '/editor.html' do
-  haml :editor
+get '/about.html' do
+  haml :about
 end
+
+#---------------------------------------------------------------------
+# Lists
+#---------------------------------------------------------------------
 
 get '/people.html' do
   @parties = json_file('parties')
@@ -23,15 +31,21 @@ get '/issues.html' do
   haml :issues
 end
 
-get '/about.html' do
-  haml :about
-end
+#---------------------------------------------------------------------
+# Stances
+#---------------------------------------------------------------------
 
 get '/person/:id' do |id|
   @person = person_from_id(id) or pass
   expand_memberships!(@person)
   @stances = person_stances(@person)
   haml :person
+end
+
+get '/issue/:id' do |id|
+  @issue = issue_from_id(id) or pass
+  @stances = issue_stances(@issue)
+  haml :issue
 end
 
 get '/issue/:issue/:person' do |issueid, mpid|
@@ -48,11 +62,9 @@ get '/issue/:issue/:person' do |issueid, mpid|
   haml :issue_mp
 end
 
-get '/issue/:id' do |id|
-  @issue = issue_from_id(id) or pass
-  @stances = issue_stances(@issue)
-  haml :issue
-end
+#---------------------------------------------------------------------
+# API
+#---------------------------------------------------------------------
 
 get '/api/motions' do
   content_type :json
@@ -73,11 +85,50 @@ get '/api/issue/:id' do |id|
   issue.to_json
 end
 
+#---------------------------------------------------------------------
+# Issue Editor
+#---------------------------------------------------------------------
+
+get '/editor.html' do
+  haml :editor
+end
+
+
 helpers do
+
+  #---------------------------------------------------------------------
+  # Data Loaders
+  #---------------------------------------------------------------------
 
   def json_file(file)
     JSON.parse(File.read("data/#{file}.json"))
   end
+
+  require 'csv'
+  def issue_extras(issueid)
+    CSV.foreach('data/spreadsheet.csv', { :converters => :all, :headers => :true }) do |row|
+      next unless row['policyid'].to_i == issueid.to_i
+      return row.to_hash
+    end
+    return
+  end
+
+  require 'open-uri'
+  require 'erb'
+
+  def morph_select(qs)
+    query = qs.gsub(/\s+/, ' ').strip
+    morph_api_key = ENV['MORPH_API_KEY'] or raise "Need a Morph API key"
+    key = ERB::Util.url_encode(morph_api_key)
+    url = 'https://api.morph.io/tmtmtmtm/publicwhip_policies/data.json' + "?key=#{key}&query=" + ERB::Util.url_encode(query)
+    warn "Fetching #{url}".yellow
+    return open(url).read
+  end
+
+  #---------------------------------------------------------------------
+  # Data Fetching
+  #---------------------------------------------------------------------
+
 
   def party_from_id(id)
     json_file('parties').detect { |p| p['id'] == id } 
@@ -115,16 +166,6 @@ helpers do
     return i['stances'].select { |mp,s| all_member_ids.include? mp }
   end
 
-  def party_histogram(issue, party)
-    party_member_stances(issue, party).reject { |mp, s| s['num_votes'].zero? }.group_by { |mp, s| stance_text(s) }
-  end
-
-  def public_whip_id(person)
-    i = person['other_identifiers'].find { |i| i['scheme'] == 'publicwhip.org' } or return
-    i['identifier']
-  end
-
-
   def person_stances(person)
     json_file('mpstances').find_all {|i| i['stances'].has_key? person['id'] }.map { |i|
       i['stances'][person['id']].merge({
@@ -135,6 +176,7 @@ helpers do
     }.reject { |s| s['num_votes'].zero? }
   end
 
+  # FIXME relies on @issue already being set
   def issue_stances(issue)
     @issue['stances'].reject { |k,v| k[/peaker/] }.map { |k, v|
       v.merge({
@@ -149,6 +191,38 @@ helpers do
       mp['memberships'].detect { |mem| mem['organization_id'] == party['id'] } 
     }
   end
+
+  def motion_search(query_string)
+    s = query_string.gsub("'",'%') # TODO better protection
+    query = "SELECT *, GROUP_CONCAT(policy) AS policies FROM data WHERE text LIKE '%#{s}%' GROUP BY id ORDER BY datetime DESC LIMIT 30"
+    morph_select(query)
+  end
+
+  def morph_votes(personid, issueid)
+    query = <<-eosql
+      SELECT DISTINCT m.text, m.datetime, m.direction, v.motion, v.option, m.shortdesc, m.result
+        FROM votes v
+        JOIN voters mp ON v.url = mp.url
+        JOIN data m ON v.motion = m.id
+       WHERE m.policy = #{issueid.to_i}
+         AND mp.id = #{personid.to_i}
+       ORDER BY m.datetime DESC
+    eosql
+    JSON.parse( morph_select(query) )
+  end
+
+
+
+
+  def party_histogram(issue, party)
+    party_member_stances(issue, party).reject { |mp, s| s['num_votes'].zero? }.group_by { |mp, s| stance_text(s) }
+  end
+
+  def public_whip_id(person)
+    i = person['other_identifiers'].find { |i| i['scheme'] == 'publicwhip.org' } or return
+    i['identifier']
+  end
+
 
   def expand_memberships!(person)
     person['memberships'].each { |mem|
@@ -178,46 +252,6 @@ helpers do
     return "moderately against"           if stance['weight'] > 0.15
     return "strongly against"             if stance['weight'] > 0.05
     return "very strongly against"        
-  end
-
-  require 'csv'
-  def issue_extras(issueid)
-    CSV.foreach('data/spreadsheet.csv', { :converters => :all, :headers => :true }) do |row|
-      next unless row['policyid'].to_i == issueid.to_i
-      return row.to_hash
-    end
-    return
-  end
-
-  require 'open-uri'
-  require 'erb'
-
-  def morph_select(qs)
-    query = qs.gsub(/\s+/, ' ').strip
-    morph_api_key = ENV['MORPH_API_KEY'] or raise "Need a Morph API key"
-    key = ERB::Util.url_encode(morph_api_key)
-    url = 'https://api.morph.io/tmtmtmtm/publicwhip_policies/data.json' + "?key=#{key}&query=" + ERB::Util.url_encode(query)
-    warn "Fetching #{url}".yellow
-    return open(url).read
-  end
-
-  def motion_search(query_string)
-    s = query_string.gsub("'",'%') # TODO better protection
-    query = "SELECT *, GROUP_CONCAT(policy) AS policies FROM data WHERE text LIKE '%#{s}%' GROUP BY id ORDER BY datetime DESC LIMIT 30"
-    morph_select(query)
-  end
-
-  def morph_votes(personid, issueid)
-    query = <<-eosql
-      SELECT DISTINCT m.text, m.datetime, m.direction, v.motion, v.option, m.shortdesc, m.result
-        FROM votes v
-        JOIN voters mp ON v.url = mp.url
-        JOIN data m ON v.motion = m.id
-       WHERE m.policy = #{issueid.to_i}
-         AND mp.id = #{personid.to_i}
-       ORDER BY m.datetime DESC
-    eosql
-    JSON.parse( morph_select(query) )
   end
 
   def vote_display(v)
