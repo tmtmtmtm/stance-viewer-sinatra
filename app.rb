@@ -27,13 +27,6 @@ get '/about.html' do
   haml :about
 end
 
-get '/party/:id' do |id|
-  @party = party_from_id(id) or pass
-  @members = party_members(@party)
-  @stances = party_stances(@party) 
-  haml :party
-end
-
 get '/person/:id' do |id|
   @person = person_from_id(id) or pass
   expand_memberships!(@person)

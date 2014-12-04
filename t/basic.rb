@@ -23,18 +23,6 @@ describe "Stance viewer" do
 
   #-------------------------------------------------------------------
 
-  describe "when viewing the party list page" do
-
-    before { get '/parties.html' }
-
-    it "should have the Independents" do
-      last_response.body.must_include 'Independent MPs'
-    end
-
-  end
-
-  #-------------------------------------------------------------------
-
   describe "when viewing the MP list page" do
 
     before { get '/people.html' }
@@ -58,26 +46,6 @@ describe "Stance viewer" do
 
   #-------------------------------------------------------------------
 
-  describe "when viewing a Party page" do
-
-    before { get '/party/pc' }
-
-    it "should have have the partys name" do
-      last_response.body.must_include 'Plaid Cymru'
-    end
-
-    it "should have some stances" do
-      last_response.body.must_include 'moderately for'
-    end
-
-    it "should include their MPs" do
-      last_response.body.must_include 'Ieuan Wyn Jones'
-    end
-
-  end
-
-  #-------------------------------------------------------------------
-
   describe "when viewing an MP page" do
 
     before { get '/person/john_bercow' }
@@ -87,7 +55,7 @@ describe "Stance viewer" do
     end
 
     it "should have their party history" do
-      last_response.body.must_match /Conservative Party<[^\d]+2009/m
+      last_response.body.gsub(/\s+/, ' ').must_match /Conservative Party \( \– 2009 \)/m
     end
 
     it "should include Speaker position" do

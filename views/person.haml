@@ -5,7 +5,7 @@
     - @person['memberships'].each do |mem|
       %li<
         - if mem['party']['id']
-          <a href="/party/#{mem['party']['id']}">#{mem['party']['name']}</a>
+          #{mem['party']['name']}
         - else 
           #{mem['party']['name']}
 

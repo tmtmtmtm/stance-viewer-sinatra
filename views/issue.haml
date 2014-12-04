@@ -4,6 +4,6 @@
 
   %ul 
     - @stances.sort_by { |s| s['weight'] }.reverse.each do |s| 
-      %li <a href="/party/#{s['party']['id']}">#{s['party']['name']}</a> voted <span class="stance">#{s['stance_text']}</span> 
+      %li #{s['party']['name']} voted <span class="stance">#{s['stance_text']}</span> 
       
 
