@@ -12,11 +12,6 @@ get '/editor.html' do
   haml :editor
 end
 
-get '/parties.html' do
-  @parties = json_file('parties')
-  haml :parties
-end
-
 get '/people.html' do
   @parties = json_file('parties')
   @people = json_file('people')
