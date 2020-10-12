@@ -6,7 +6,7 @@ GEM
     eventmachine (1.0.3)
     haml (4.0.5)
       tilt
-    json (1.8.1)
+    json (2.3.0)
     open-uri-cached (0.0.5)
     rack (1.5.2)
     redcarpet (2.3.0)
